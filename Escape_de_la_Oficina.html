@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Escape de la Oficina</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eaf0ff,#f9eaf5);color:#26324a}
+button{font:inherit;cursor:pointer}.screen{display:none;min-height:100vh}.active{display:flex}
+#home,#end{align-items:center;justify-content:center;padding:20px}.box{width:min(900px,94vw);background:#fff;border-radius:28px;padding:32px;text-align:center;box-shadow:0 15px 50px #26324a22}
+h1{font-size:clamp(35px,7vw,65px);margin:8px 0}h2{margin:8px 0 12px}.lead{font-size:18px;line-height:1.55;color:#687287}
+.btn{border:0;border-radius:15px;padding:14px 22px;background:linear-gradient(135deg,#567ccc,#a287d8);color:#fff;font-weight:bold;box-shadow:0 7px 18px #567ccc33}.secondary{background:#edf1fa;color:#26324a;box-shadow:none}
+#game{flex-direction:column;width:min(1100px,100%);margin:auto;padding:12px;gap:12px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.pill{background:#fff;border-radius:99px;padding:10px 14px;font-weight:bold;box-shadow:0 5px 18px #26324a12}
+.timer.danger{background:#fff0f1;color:#b43d49}.progress{background:#fff;padding:11px 14px;border-radius:16px;box-shadow:0 5px 18px #26324a12}.bar{height:12px;background:#e9edf5;border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#e889b6,#9d86d9,#51b889);transition:.5s}
+.office{position:relative;background:linear-gradient(#dfe8f7 0 45%,#d7b991 45%);border-radius:24px;min-height:400px;padding:25px;overflow:hidden;box-shadow:inset 0 0 0 5px #fff8}
+.window{position:absolute;left:25px;top:25px;width:170px;height:105px;background:#b9d9ef;border:10px solid #fff;box-shadow:0 5px 15px #0002}.window:after{content:"";position:absolute;left:50%;top:0;height:100%;border-left:4px solid #fff}.window:before{content:"";position:absolute;left:0;top:50%;width:100%;border-top:4px solid #fff}
+.desk{position:absolute;left:50%;bottom:45px;transform:translateX(-50%);width:55%;height:75px;background:#9d6f48;border-radius:15px;box-shadow:0 12px 0 #795337}.computer{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);font-size:65px}
+.board{position:absolute;right:25px;top:25px;background:#42685d;color:#fff;width:220px;padding:18px;border-radius:12px}.board b{display:block;margin-bottom:8px}.board small{line-height:1.5}
+.people{position:absolute;bottom:125px;left:0;width:100%;display:flex;justify-content:space-around;padding:0 25px}.person{text-align:center;font-size:38px;filter:grayscale(.35);transition:.5s}.person span{display:block;font-size:12px;font-weight:bold}.person.united{filter:none;transform:translateY(-8px) scale(1.08)}
+.object{position:absolute;border:0;background:#fff;border-radius:14px;padding:10px 13px;box-shadow:0 7px 18px #26324a22;font-weight:bold}.obj-pc{left:calc(50% - 58px);bottom:15px}.obj-file{left:16%;bottom:18px}.obj-phone{right:18%;bottom:17px}.obj-board{right:65px;top:150px}
+.challenge{background:#fff;border-radius:24px;padding:22px;box-shadow:0 10px 30px #26324a15}.tag{display:inline-block;background:#f0edff;color:#6755a9;padding:7px 11px;border-radius:99px;font-weight:bold;font-size:13px}
+.challenge p{line-height:1.5}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.choice{border:2px solid #e5e8f0;background:#fff;padding:14px;border-radius:14px;text-align:left}.choice:hover{border-color:#9d86d9}.choice.ok{background:#eaf9f1;border-color:#51b889}.choice.no{background:#fff0f1;border-color:#e66c75}
+.feedback{display:none;margin-top:13px;padding:13px;border-radius:13px;line-height:1.45}.show{display:block}.good{background:#eaf9f1;color:#237650}.bad{background:#fff0f1;color:#a33b45}
+.hidden{display:none!important}.code{font-size:32px;letter-spacing:8px;font-weight:900;background:#f5f6fb;padding:15px;border-radius:15px;margin:14px 0}.stars{font-size:42px}
+@media(max-width:650px){.office{min-height:330px}.window{width:115px;height:75px}.board{width:145px;font-size:12px}.computer{font-size:48px}.people{bottom:110px}.person{font-size:30px}.choices{grid-template-columns:1fr}.desk{width:70%}.obj-board{right:12px}}
+</style>
+</head>
+<body>
+<section id="home" class="screen active"><div class="box">
+<div style="font-size:75px">🔐🏢</div><h1>ESCAPE DE LA OFICINA</h1>
+<h2>La misión del equipo</h2>
+<p class="lead">La oficina quedó bloqueada porque las relaciones entre sus miembros se están deteriorando. Supera <b>5 retos</b>, reconstruye el equipo y encuentra el código de salida.</p>
+<p>⏱️ Tienes <b>5 minutos</b> · ❤️ 3 oportunidades · ⭐ puntos</p>
+<button class="btn" onclick="start()">🚀 ENTRAR A LA OFICINA</button>
+</div></section>
+
+<section id="game" class="screen">
+<div class="top"><b>🏢 ESCAPE DE LA OFICINA</b><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="pill">⭐ <span id="score">0</span></span><span class="pill">❤️ <span id="lives">3</span></span><span class="pill timer" id="timer">05:00</span></div></div>
+<div class="progress"><b>🔓 Puerta: <span id="step">0</span>/5</b><div class="bar"><div class="fill" id="fill"></div></div></div>
+<div class="office">
+<div class="window"></div><div class="board"><b>📋 PIZARRA</b><small id="boardText">“Algo está fallando… necesitamos trabajar como equipo.”</small></div>
+<div class="people"><div class="person" id="p1">👩🏻‍💼<span>Laura</span></div><div class="person" id="p2">👨🏽‍💻<span>Carlos</span></div><div class="person" id="p3">👩🏽<span>Sofía</span></div><div class="person" id="p4">👨🏻‍💼<span>Andrés</span></div><div class="person" id="p5">👩🏾‍💼<span>Valeria</span></div></div>
+<div class="desk"></div><div class="computer">💻</div>
+<button class="object obj-pc" onclick="hint('💻 Computador: aquí encontrarás el reto actual.')">💻 Computador</button>
+<button class="object obj-file" onclick="hint('📁 Archivador: contiene pistas sobre el trabajo del equipo.')">📁 Archivador</button>
+<button class="object obj-phone" onclick="hint('📱 Celular: la información debe llegar a todos.')">📱 Celular</button>
+<button class="object obj-board" onclick="hint('📝 Pizarra: recuerda que el objetivo es trabajar juntos.')">📝 Pista</button>
+</div>
+<div class="challenge"><span class="tag" id="tag">RETO 1</span><h2 id="title"></h2><p id="text"></p><b id="question"></b><div class="choices" id="choices"></div><div id="feedback" class="feedback"></div><button id="next" class="btn hidden" onclick="next()">➡️ Siguiente reto</button></div>
+</section>
+
+<section id="end" class="screen"><div class="box">
+<div class="stars" id="endIcon">🏆</div><h1 id="endTitle">¡ESCAPASTE!</h1><p class="lead" id="endText"></p><div class="code" id="code">EQUIPO</div><p>⭐ Puntuación: <b id="finalScore">0</b></p>
+<button class="btn" onclick="start()">🔄 Jugar de nuevo</button> <button class="btn secondary" onclick="home()">🏠 Inicio</button>
+</div></section>
+
+<script>
+const challenges=[
+{tag:"RETO 1 · PROYECTO COMÚN",title:"🤝 La puerta del objetivo",text:"Encuentras cinco piezas sobre el escritorio. Cada empleado quiere hacer algo diferente y la puerta no se abre.",q:"¿Qué deben hacer primero?",a:["Trabajar cada uno por separado.","Definir juntos un objetivo común y cómo aporta cada miembro.","Esperar a que el jefe haga todo.","Elegir una persona y excluir a las demás."],ok:1,why:"Un proyecto común conecta el trabajo de todos y fortalece la participación."},
+{tag:"RETO 2 · INFORMACIÓN",title:"🔄 El mensaje perdido",text:"El sistema muestra que una información importante llegó a un solo departamento. Los demás están trabajando con datos antiguos.",q:"¿Cuál es la solución?",a:["Guardar la información para evitar confusiones.","Compartirla únicamente con los jefes.","Crear canales para que circule entre miembros y áreas.","No compartir nada hasta terminar el proyecto."],ok:2,why:"Compartir información en diferentes direcciones mejora la coordinación."},
+{tag:"RETO 3 · IDEAS",title:"💡 La caja de ideas",text:"Sofía tiene una idea para mejorar el proceso, pero Carlos tiene otra. La caja se desbloquea solo si aprovechan el conocimiento del equipo.",q:"¿Qué opción es mejor?",a:["Escuchar ambas ideas y combinarlas para buscar una solución.","Usar solo la idea del empleado con más antigüedad.","Ignorar las ideas para no perder tiempo.","Dejar que una persona decida todo."],ok:0,why:"Aportar ideas y enriquecerse con las de los demás favorece la participación y la creatividad."},
+{tag:"RETO 4 · ORGANIZACIÓN",title:"🗂️ El archivador del caos",text:"Hay tareas repetidas, otras sin responsable y varias personas no saben con quién coordinarse.",q:"¿Cómo desbloquean el archivador?",a:["Que todos hagan todas las tareas.","Asignar funciones, responsabilidades y coordinación.","Dejar que cada uno elija cualquier tarea.","Agregar más tareas sin cambiar nada."],ok:1,why:"Mejorar la organización interna ayuda a coordinar responsabilidades y evita duplicidades."},
+{tag:"RETO 5 · INNOVACIÓN",title:"🚀 La puerta final",text:"El equipo ya está unido. Ahora debe mejorar un proceso que lleva años haciéndose igual.",q:"¿Qué decisión permite avanzar e innovar?",a:["Mantener todo igual.","Esperar a que otra empresa encuentre una solución.","Combinar ideas, probar mejoras y aprender de los resultados.","Dejar la innovación en manos de una sola persona."],ok:2,why:"Las relaciones colaborativas permiten generar mejoras, aprendizaje e innovación."}
+];
+let cur=0,score=0,lives=3,time=300,timer,answered=false;
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active")}
+function start(){cur=0;score=0;lives=3;time=300;document.getElementById("score").textContent=0;document.getElementById("lives").textContent=3;show("game");render();clearInterval(timer);timer=setInterval(tick,1000)}
+function tick(){time--;let m=Math.floor(time/60),s=time%60;let el=document.getElementById("timer");el.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");el.classList.toggle("danger",time<=45);if(time<=0)finish(false)}
+function render(){let c=challenges[cur];answered=false;document.getElementById("step").textContent=cur;document.getElementById("fill").style.width=(cur*20)+"%";document.getElementById("tag").textContent=c.tag;document.getElementById("title").textContent=c.title;document.getElementById("text").textContent=c.text;document.getElementById("question").textContent=c.q;document.getElementById("feedback").className="feedback";document.getElementById("next").className="btn hidden";let box=document.getElementById("choices");box.innerHTML="";c.a.forEach((x,i)=>{let b=document.createElement("button");b.className="choice";b.innerHTML="<b>"+String.fromCharCode(65+i)+".</b> "+x;b.onclick=()=>answer(i,b);box.appendChild(b)});document.getElementById("boardText").textContent=cur===0?"“Algo está fallando… necesitamos trabajar como equipo.”":cur===1?"“La información debe llegar a todos.”":cur===2?"“Una buena idea puede mejorar con otra.”":cur===3?"“Ordenar también es trabajar en equipo.”":"“Ahora conviertan la colaboración en innovación.”"}
+function answer(i,b){if(answered)return;answered=true;let c=challenges[cur];document.querySelectorAll(".choice").forEach(x=>x.disabled=true);let fb=document.getElementById("feedback");if(i===c.ok){b.classList.add("ok");score+=100;fb.className="feedback show good";fb.innerHTML="🎉 <b>¡Reto superado!</b> "+c.why;[1,2,3,4,5].slice(0,cur+1).forEach(n=>document.getElementById("p"+n).classList.add("united"));}else{b.classList.add("no");lives--;document.getElementById("lives").textContent=lives;fb.className="feedback show bad";fb.innerHTML="💥 <b>La puerta sigue cerrada.</b> "+c.why;if(lives<=0){setTimeout(()=>finish(false),900);return}}document.getElementById("score").textContent=score;document.getElementById("next").className="btn";document.getElementById("next").textContent=cur===4?"🔓 ABRIR PUERTA":"➡️ Siguiente reto"}
+function next(){if(cur<4){cur++;render()}else finish(true)}
+function finish(won){clearInterval(timer);document.getElementById("finalScore").textContent=score;if(won){document.getElementById("endIcon").textContent="🏆🔓";document.getElementById("endTitle").textContent="¡ESCAPASTE!";document.getElementById("endText").innerHTML="<b>¡Equipo reconstruido!</b><br>Cuando los miembros trabajan por un proyecto común, comparten información, aportan ideas, mejoran la organización interna y promueven la innovación, las relaciones dentro de la organización se fortalecen.";document.getElementById("code").textContent="EQUIPO"}else{document.getElementById("endIcon").textContent="🔐";document.getElementById("endTitle").textContent="La oficina sigue cerrada";document.getElementById("endText").textContent="No lograste completar la misión. Intenta de nuevo y reconstruye las relaciones del equipo.";document.getElementById("code").textContent="INTÉNTALO"}show("end")}
+function hint(t){alert(t)}function home(){clearInterval(timer);show("home")}
+</script>
+</body></html>
