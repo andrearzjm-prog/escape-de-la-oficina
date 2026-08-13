@@ -2,75 +2,1613 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Escape de la Oficina</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eaf0ff,#f9eaf5);color:#26324a}
-button{font:inherit;cursor:pointer}.screen{display:none;min-height:100vh}.active{display:flex}
-#home,#end{align-items:center;justify-content:center;padding:20px}.box{width:min(900px,94vw);background:#fff;border-radius:28px;padding:32px;text-align:center;box-shadow:0 15px 50px #26324a22}
-h1{font-size:clamp(35px,7vw,65px);margin:8px 0}h2{margin:8px 0 12px}.lead{font-size:18px;line-height:1.55;color:#687287}
-.btn{border:0;border-radius:15px;padding:14px 22px;background:linear-gradient(135deg,#567ccc,#a287d8);color:#fff;font-weight:bold;box-shadow:0 7px 18px #567ccc33}.secondary{background:#edf1fa;color:#26324a;box-shadow:none}
-#game{flex-direction:column;width:min(1100px,100%);margin:auto;padding:12px;gap:12px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.pill{background:#fff;border-radius:99px;padding:10px 14px;font-weight:bold;box-shadow:0 5px 18px #26324a12}
-.timer.danger{background:#fff0f1;color:#b43d49}.progress{background:#fff;padding:11px 14px;border-radius:16px;box-shadow:0 5px 18px #26324a12}.bar{height:12px;background:#e9edf5;border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#e889b6,#9d86d9,#51b889);transition:.5s}
-.office{position:relative;background:linear-gradient(#dfe8f7 0 45%,#d7b991 45%);border-radius:24px;min-height:400px;padding:25px;overflow:hidden;box-shadow:inset 0 0 0 5px #fff8}
-.window{position:absolute;left:25px;top:25px;width:170px;height:105px;background:#b9d9ef;border:10px solid #fff;box-shadow:0 5px 15px #0002}.window:after{content:"";position:absolute;left:50%;top:0;height:100%;border-left:4px solid #fff}.window:before{content:"";position:absolute;left:0;top:50%;width:100%;border-top:4px solid #fff}
-.desk{position:absolute;left:50%;bottom:45px;transform:translateX(-50%);width:55%;height:75px;background:#9d6f48;border-radius:15px;box-shadow:0 12px 0 #795337}.computer{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);font-size:65px}
-.board{position:absolute;right:25px;top:25px;background:#42685d;color:#fff;width:220px;padding:18px;border-radius:12px}.board b{display:block;margin-bottom:8px}.board small{line-height:1.5}
-.people{position:absolute;bottom:125px;left:0;width:100%;display:flex;justify-content:space-around;padding:0 25px}.person{text-align:center;font-size:38px;filter:grayscale(.35);transition:.5s}.person span{display:block;font-size:12px;font-weight:bold}.person.united{filter:none;transform:translateY(-8px) scale(1.08)}
-.object{position:absolute;border:0;background:#fff;border-radius:14px;padding:10px 13px;box-shadow:0 7px 18px #26324a22;font-weight:bold}.obj-pc{left:calc(50% - 58px);bottom:15px}.obj-file{left:16%;bottom:18px}.obj-phone{right:18%;bottom:17px}.obj-board{right:65px;top:150px}
-.challenge{background:#fff;border-radius:24px;padding:22px;box-shadow:0 10px 30px #26324a15}.tag{display:inline-block;background:#f0edff;color:#6755a9;padding:7px 11px;border-radius:99px;font-weight:bold;font-size:13px}
-.challenge p{line-height:1.5}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.choice{border:2px solid #e5e8f0;background:#fff;padding:14px;border-radius:14px;text-align:left}.choice:hover{border-color:#9d86d9}.choice.ok{background:#eaf9f1;border-color:#51b889}.choice.no{background:#fff0f1;border-color:#e66c75}
-.feedback{display:none;margin-top:13px;padding:13px;border-radius:13px;line-height:1.45}.show{display:block}.good{background:#eaf9f1;color:#237650}.bad{background:#fff0f1;color:#a33b45}
-.hidden{display:none!important}.code{font-size:32px;letter-spacing:8px;font-weight:900;background:#f5f6fb;padding:15px;border-radius:15px;margin:14px 0}.stars{font-size:42px}
-@media(max-width:650px){.office{min-height:330px}.window{width:115px;height:75px}.board{width:145px;font-size:12px}.computer{font-size:48px}.people{bottom:110px}.person{font-size:30px}.choices{grid-template-columns:1fr}.desk{width:70%}.obj-board{right:12px}}
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#eaf0ff,#fcecf7);
+  color:#26324a;
+}
+
+.screen{
+  display:none;
+  min-height:100vh;
+}
+
+.active{
+  display:flex;
+}
+
+.wrap{
+  width:min(1000px,94vw);
+  margin:auto;
+}
+
+.home,.end{
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  border-radius:28px;
+  padding:30px;
+  box-shadow:0 15px 50px #26324a22;
+}
+
+h1{
+  font-size:clamp(36px,7vw,64px);
+  margin:8px 0;
+  color:#334b8e;
+}
+
+h2{
+  margin:8px 0 15px;
+}
+
+.lead{
+  line-height:1.55;
+  color:#697389;
+  font-size:18px;
+}
+
+.btn{
+  border:0;
+  border-radius:15px;
+  padding:14px 22px;
+  background:linear-gradient(135deg,#5277d0,#9b7bd0);
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+  margin:5px;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:scale(1.04);
+}
+
+.btn:active{
+  transform:scale(.96);
+}
+
+/* JUEGO */
+
+#game{
+  flex-direction:column;
+  padding:12px;
+  gap:12px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.pill{
+  background:#fff;
+  padding:10px 14px;
+  border-radius:99px;
+  font-weight:bold;
+  box-shadow:0 5px 15px #0001;
+}
+
+.timer-warning{
+  animation:pulse 1s infinite;
+  background:#fff0f1;
+  color:#b92f3c;
+}
+
+@keyframes pulse{
+  50%{
+    transform:scale(1.08);
+  }
+}
+
+.bar{
+  height:12px;
+  background:#e8ebf2;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#e987b5,#8f82d5,#4db589);
+  transition:.5s;
+}
+
+/* EQUIPO */
+
+.team{
+  width:min(1000px,94vw);
+  background:#ffffffdd;
+  border-radius:20px;
+  padding:12px 10px;
+  box-shadow:0 8px 25px #0001;
+
+  display:flex;
+  justify-content:space-around;
+  align-items:flex-start;
+  gap:8px;
+
+  overflow-x:auto;
+}
+
+.team-person{
+  min-width:90px;
+  text-align:center;
+  padding:8px 5px;
+  border-radius:15px;
+  transition:.5s;
+}
+
+.team-name{
+  display:block;
+  font-size:14px;
+  font-weight:900;
+  color:#334b8e;
+  margin-bottom:5px;
+}
+
+.team-emoji{
+  display:block;
+  font-size:42px;
+  line-height:1.1;
+}
+
+.team-person.united{
+  transform:translateY(-7px) scale(1.12);
+  background:#f0edff;
+  box-shadow:0 5px 18px #8f82d544;
+  animation:join .7s ease;
+}
+
+@keyframes join{
+  0%{
+    transform:scale(.7) rotate(-8deg);
+  }
+
+  60%{
+    transform:scale(1.2) rotate(5deg);
+  }
+
+  100%{
+    transform:translateY(-7px) scale(1.12);
+  }
+}
+
+/* OFICINA */
+
+.office{
+  position:relative;
+  min-height:390px;
+  background:linear-gradient(#dce8f7 0 48%,#d5b489 48%);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:inset 0 0 0 5px #ffffff99;
+}
+
+.window{
+  position:absolute;
+  left:25px;
+  top:25px;
+  width:150px;
+  height:95px;
+  background:#a9d3ed;
+  border:9px solid white;
+}
+
+.board{
+  position:absolute;
+  right:25px;
+  top:25px;
+  background:#42685d;
+  color:white;
+  padding:15px;
+  border-radius:12px;
+  width:210px;
+}
+
+.desk{
+  position:absolute;
+  left:50%;
+  bottom:38px;
+  transform:translateX(-50%);
+  width:52%;
+  height:65px;
+  background:#976b47;
+  border-radius:13px;
+}
+
+.computer{
+  position:absolute;
+  left:50%;
+  bottom:88px;
+  transform:translateX(-50%);
+  font-size:60px;
+}
+
+/* PUERTA */
+
+.door{
+  position:absolute;
+  right:20px;
+  bottom:0;
+  width:105px;
+  height:190px;
+  background:#4c5365;
+  border:8px solid #303646;
+  border-bottom:0;
+  border-radius:12px 12px 0 0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:42px;
+  transition:.5s;
+}
+
+.door.locked{
+  filter:grayscale(.3);
+}
+
+.door.unlocked{
+  background:#61b58b;
+  transform:perspective(500px) rotateY(-25deg);
+  transform-origin:left;
+  box-shadow:15px 0 30px #0002;
+}
+
+.lock{
+  position:absolute;
+  bottom:70px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:28px;
+}
+
+.door-label{
+  position:absolute;
+  top:10px;
+  font-size:12px;
+  color:white;
+  font-weight:bold;
+  text-align:center;
+}
+
+/* RETO */
+
+.challenge{
+  background:#fff;
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 10px 30px #0001;
+}
+
+.challenge.success{
+  animation:successBox .7s ease;
+}
+
+.challenge.error{
+  animation:shake .45s ease;
+}
+
+@keyframes successBox{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.025)}
+  100%{transform:scale(1)}
+}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-8px)}
+  75%{transform:translateX(8px)}
+}
+
+.tag{
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:99px;
+  background:#f0edff;
+  color:#6857a7;
+  font-weight:bold;
+  font-size:13px;
+}
+
+.area{
+  min-height:170px;
+  background:#f7f8fc;
+  border-radius:18px;
+  padding:16px;
+  margin-top:15px;
+}
+
+.items{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+}
+
+.item{
+  padding:13px 15px;
+  background:#fff;
+  border:2px solid #dce1ec;
+  border-radius:14px;
+  cursor:pointer;
+  box-shadow:0 4px 10px #0000000d;
+  transition:.2s;
+}
+
+.item:hover{
+  transform:translateY(-2px);
+}
+
+.item.selected{
+  border-color:#8c78ce;
+  background:#f0edff;
+}
+
+.item.good{
+  border-color:#51b889;
+  background:#eaf9f1;
+}
+
+.item.bad{
+  border-color:#e56d76;
+  background:#fff0f1;
+}
+
+.slots{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin:12px 0;
+}
+
+.msg{
+  margin-top:12px;
+  padding:12px;
+  border-radius:12px;
+  display:none;
+  font-weight:bold;
+}
+
+.msg.show{
+  display:block;
+}
+
+.goodmsg{
+  background:#eaf9f1;
+  color:#216d4d;
+}
+
+.badmsg{
+  background:#fff0f1;
+  color:#9e3944;
+}
+
+.warning{
+  background:#fff5d9;
+  color:#8a6200;
+}
+
+/* CONFETI */
+
+.confetti{
+  position:fixed;
+  top:-20px;
+  font-size:25px;
+  pointer-events:none;
+  animation:fall 1.3s linear forwards;
+  z-index:9999;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(500deg);
+    opacity:0;
+  }
+}
+
+.code{
+  font-size:32px;
+  font-weight:900;
+  letter-spacing:7px;
+  background:#f5f6fb;
+  padding:15px;
+  border-radius:15px;
+  margin:15px;
+}
+
+.final-door{
+  font-size:80px;
+  animation:openDoor 1s infinite alternate;
+}
+
+@keyframes openDoor{
+  to{
+    transform:scale(1.08);
+  }
+}
+
+/* CELULAR */
+
+@media(max-width:650px){
+
+  #game{
+    padding:8px;
+  }
+
+  .top{
+    justify-content:center;
+    text-align:center;
+  }
+
+  .team{
+    justify-content:flex-start;
+  }
+
+  .team-person{
+    min-width:78px;
+  }
+
+  .team-name{
+    font-size:12px;
+  }
+
+  .team-emoji{
+    font-size:34px;
+  }
+
+  .office{
+    min-height:330px;
+  }
+
+  .window{
+    width:105px;
+    height:72px;
+  }
+
+  .board{
+    width:140px;
+    font-size:11px;
+    padding:10px;
+  }
+
+  .desk{
+    width:68%;
+  }
+
+  .computer{
+    font-size:48px;
+  }
+
+  .door{
+    width:75px;
+    height:140px;
+    font-size:30px;
+  }
+
+  .challenge{
+    padding:17px;
+  }
+
+  .items{
+    gap:7px;
+  }
+
+  .item{
+    padding:10px 11px;
+    font-size:13px;
+  }
+
+}
 </style>
 </head>
-<body>
-<section id="home" class="screen active"><div class="box">
-<div style="font-size:75px">🔐🏢</div><h1>ESCAPE DE LA OFICINA</h1>
-<h2>La misión del equipo</h2>
-<p class="lead">La oficina quedó bloqueada porque las relaciones entre sus miembros se están deteriorando. Supera <b>5 retos</b>, reconstruye el equipo y encuentra el código de salida.</p>
-<p>⏱️ Tienes <b>5 minutos</b> · ❤️ 3 oportunidades · ⭐ puntos</p>
-<button class="btn" onclick="start()">🚀 ENTRAR A LA OFICINA</button>
-</div></section>
 
-<section id="game" class="screen">
-<div class="top"><b>🏢 ESCAPE DE LA OFICINA</b><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="pill">⭐ <span id="score">0</span></span><span class="pill">❤️ <span id="lives">3</span></span><span class="pill timer" id="timer">05:00</span></div></div>
-<div class="progress"><b>🔓 Puerta: <span id="step">0</span>/5</b><div class="bar"><div class="fill" id="fill"></div></div></div>
-<div class="office">
-<div class="window"></div><div class="board"><b>📋 PIZARRA</b><small id="boardText">“Algo está fallando… necesitamos trabajar como equipo.”</small></div>
-<div class="people"><div class="person" id="p1">👩🏻‍💼<span>Laura</span></div><div class="person" id="p2">👨🏽‍💻<span>Carlos</span></div><div class="person" id="p3">👩🏽<span>Sofía</span></div><div class="person" id="p4">👨🏻‍💼<span>Andrés</span></div><div class="person" id="p5">👩🏾‍💼<span>Valeria</span></div></div>
-<div class="desk"></div><div class="computer">💻</div>
-<button class="object obj-pc" onclick="hint('💻 Computador: aquí encontrarás el reto actual.')">💻 Computador</button>
-<button class="object obj-file" onclick="hint('📁 Archivador: contiene pistas sobre el trabajo del equipo.')">📁 Archivador</button>
-<button class="object obj-phone" onclick="hint('📱 Celular: la información debe llegar a todos.')">📱 Celular</button>
-<button class="object obj-board" onclick="hint('📝 Pizarra: recuerda que el objetivo es trabajar juntos.')">📝 Pista</button>
+<body>
+
+<!-- INICIO -->
+
+<section id="home" class="screen active home">
+
+<div class="wrap card">
+
+<div style="font-size:75px">🔐🏢</div>
+
+<h1>ESCAPE DE LA OFICINA</h1>
+
+<h2>La misión del equipo</h2>
+
+<p class="lead">
+Esta vez no hay preguntas de opción múltiple.
+<br>
+<b>Observa, organiza, conecta y resuelve.</b>
+<br><br>
+Completa 5 retos para reconstruir el equipo y abrir la puerta.
+</p>
+
+<p>
+⏱️ 5 minutos · ❤️ 3 oportunidades
+</p>
+
+<button class="btn" onclick="start()">
+🚀 ENTRAR
+</button>
+
 </div>
-<div class="challenge"><span class="tag" id="tag">RETO 1</span><h2 id="title"></h2><p id="text"></p><b id="question"></b><div class="choices" id="choices"></div><div id="feedback" class="feedback"></div><button id="next" class="btn hidden" onclick="next()">➡️ Siguiente reto</button></div>
+
 </section>
 
-<section id="end" class="screen"><div class="box">
-<div class="stars" id="endIcon">🏆</div><h1 id="endTitle">¡ESCAPASTE!</h1><p class="lead" id="endText"></p><div class="code" id="code">EQUIPO</div><p>⭐ Puntuación: <b id="finalScore">0</b></p>
-<button class="btn" onclick="start()">🔄 Jugar de nuevo</button> <button class="btn secondary" onclick="home()">🏠 Inicio</button>
-</div></section>
+
+<!-- JUEGO -->
+
+<section id="game" class="screen">
+
+<div class="top wrap">
+
+<b>🔐 ESCAPE DE LA OFICINA</b>
+
+<div>
+
+<span class="pill">
+⭐ <span id="score">0</span>
+</span>
+
+<span class="pill">
+❤️ <span id="lives">3</span>
+</span>
+
+<span class="pill" id="timerPill">
+⏱️ <span id="time">05:00</span>
+</span>
+
+</div>
+
+</div>
+
+
+<!-- EQUIPO -->
+
+<div class="team">
+
+<div class="team-person" id="p1">
+<span class="team-name">Andrea</span>
+<span class="team-emoji">👩🏻‍💼</span>
+</div>
+
+<div class="team-person" id="p2">
+<span class="team-name">Jessica</span>
+<span class="team-emoji">👩🏻‍💼</span>
+</div>
+
+<div class="team-person" id="p3">
+<span class="team-name">Janier</span>
+<span class="team-emoji">👨🏽‍💼</span>
+</div>
+
+<div class="team-person" id="p4">
+<span class="team-name">Yonatan</span>
+<span class="team-emoji">👨🏽‍💼</span>
+</div>
+
+<div class="team-person" id="p5">
+<span class="team-name">Laura</span>
+<span class="team-emoji">👩🏻‍💻</span>
+</div>
+
+<div class="team-person" id="p6">
+<span class="team-name">MyFa</span>
+<span class="team-emoji">👩🏻‍💻</span>
+</div>
+
+</div>
+
+
+<div class="wrap">
+
+<div class="bar">
+<div class="fill" id="fill"></div>
+</div>
+
+</div>
+
+
+<!-- OFICINA -->
+
+<div class="wrap office">
+
+<div class="window"></div>
+
+<div class="board">
+
+📋 <b>PIZARRA</b>
+
+<br>
+
+<small id="board">
+Reconstruye el equipo.
+</small>
+
+</div>
+
+<div class="desk"></div>
+
+<div class="computer">
+💻
+</div>
+
+<div class="door locked" id="door">
+
+<div class="door-label">
+SALIDA
+</div>
+
+<div class="lock" id="lock">
+🔒
+</div>
+
+</div>
+
+</div>
+
+
+<!-- RETO -->
+
+<div class="wrap challenge" id="challenge">
+
+<span class="tag" id="tag"></span>
+
+<h2 id="title"></h2>
+
+<p id="desc"></p>
+
+<div id="area" class="area"></div>
+
+<div id="msg" class="msg"></div>
+
+<button
+id="action"
+class="btn"
+onclick="act()">
+
+Comprobar
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- FINAL -->
+
+<section id="end" class="screen end">
+
+<div class="wrap card">
+
+<div class="final-door">
+🚪
+</div>
+
+<h1>
+¡ESCAPASTE!
+</h1>
+
+<p class="lead">
+
+🎉 ¡Excelente trabajo! 🎉
+<br>
+El equipo logró superar los obstáculos
+trabajando de manera colaborativa.
+
+</p>
+
+<div class="code">
+EQUIPO
+</div>
+
+<p>
+⭐ Puntuación:
+<b id="final">0</b>
+</p>
+
+<button
+class="btn"
+onclick="start()">
+
+🔄 Jugar otra vez
+
+</button>
+
+</div>
+
+</section>
+
 
 <script>
-const challenges=[
-{tag:"RETO 1 · PROYECTO COMÚN",title:"🤝 La puerta del objetivo",text:"Encuentras cinco piezas sobre el escritorio. Cada empleado quiere hacer algo diferente y la puerta no se abre.",q:"¿Qué deben hacer primero?",a:["Trabajar cada uno por separado.","Definir juntos un objetivo común y cómo aporta cada miembro.","Esperar a que el jefe haga todo.","Elegir una persona y excluir a las demás."],ok:1,why:"Un proyecto común conecta el trabajo de todos y fortalece la participación."},
-{tag:"RETO 2 · INFORMACIÓN",title:"🔄 El mensaje perdido",text:"El sistema muestra que una información importante llegó a un solo departamento. Los demás están trabajando con datos antiguos.",q:"¿Cuál es la solución?",a:["Guardar la información para evitar confusiones.","Compartirla únicamente con los jefes.","Crear canales para que circule entre miembros y áreas.","No compartir nada hasta terminar el proyecto."],ok:2,why:"Compartir información en diferentes direcciones mejora la coordinación."},
-{tag:"RETO 3 · IDEAS",title:"💡 La caja de ideas",text:"Sofía tiene una idea para mejorar el proceso, pero Carlos tiene otra. La caja se desbloquea solo si aprovechan el conocimiento del equipo.",q:"¿Qué opción es mejor?",a:["Escuchar ambas ideas y combinarlas para buscar una solución.","Usar solo la idea del empleado con más antigüedad.","Ignorar las ideas para no perder tiempo.","Dejar que una persona decida todo."],ok:0,why:"Aportar ideas y enriquecerse con las de los demás favorece la participación y la creatividad."},
-{tag:"RETO 4 · ORGANIZACIÓN",title:"🗂️ El archivador del caos",text:"Hay tareas repetidas, otras sin responsable y varias personas no saben con quién coordinarse.",q:"¿Cómo desbloquean el archivador?",a:["Que todos hagan todas las tareas.","Asignar funciones, responsabilidades y coordinación.","Dejar que cada uno elija cualquier tarea.","Agregar más tareas sin cambiar nada."],ok:1,why:"Mejorar la organización interna ayuda a coordinar responsabilidades y evita duplicidades."},
-{tag:"RETO 5 · INNOVACIÓN",title:"🚀 La puerta final",text:"El equipo ya está unido. Ahora debe mejorar un proceso que lleva años haciéndose igual.",q:"¿Qué decisión permite avanzar e innovar?",a:["Mantener todo igual.","Esperar a que otra empresa encuentre una solución.","Combinar ideas, probar mejoras y aprender de los resultados.","Dejar la innovación en manos de una sola persona."],ok:2,why:"Las relaciones colaborativas permiten generar mejoras, aprendizaje e innovación."}
+
+let step=0;
+let score=0;
+let lives=3;
+let time=300;
+let timer;
+let done=false;
+let selected=[];
+let pairFirst=null;
+let pairGood=0;
+let audioCtx=null;
+
+
+const data=[
+
+{
+tag:"RETO 1 · CONSTRUYE",
+title:"🧩 Construye el equipo",
+desc:"Haz clic en las 3 piezas que deben estar en la base de un equipo que trabaja unido.",
+items:[
+["Objetivo común",1],
+["Aislar departamentos",0],
+["Colaboración",1],
+["Compartir información",1],
+["Competencia interna",0]
+],
+need:3
+},
+
+{
+tag:"RETO 2 · MENSAJE",
+title:"📨 Ordena el mensaje",
+desc:"Haz clic en las partes del mensaje en el orden correcto para que la información circule.",
+items:[
+["1. Recibir información",1],
+["2. Compartir con el equipo",2],
+["3. Coordinar acciones",3],
+["4. Guardar y ocultar",0]
+],
+order:[1,2,3]
+},
+
+{
+tag:"RETO 3 · IDEAS",
+title:"💡 Atrapa las buenas ideas",
+desc:"Selecciona las ideas que ayudan a mejorar el trabajo del equipo. Evita las que lo bloquean.",
+items:[
+["Escuchar propuestas",1],
+["Ignorar al compañero",0],
+["Combinar conocimientos",1],
+["Probar una mejora",1],
+["No cambiar nunca",0]
+],
+need:3
+},
+
+{
+tag:"RETO 4 · ORGANIZA",
+title:"🗂️ Organiza la oficina",
+desc:"Relaciona cada elemento con el resultado que corresponde. Haz clic en una pareja por turno.",
+pairs:[
+["Funciones claras","Cada persona sabe qué hacer"],
+["Información compartida","Todos trabajan con datos actualizados"],
+["Tareas duplicadas","Confusión y pérdida de tiempo"]
+],
+correct:[0,1]
+},
+
+{
+tag:"RETO 5 · INNOVA",
+title:"🚀 Crea la solución",
+desc:"Selecciona una opción de cada columna para construir una mejora completa.",
+cols:[
+["Problema: proceso lento","Problema: falta de orden"],
+["Idea: automatizar","Idea: eliminar información"],
+["Resultado: más agilidad","Resultado: más confusión"]
+],
+correct:[0,0,0]
+}
+
 ];
-let cur=0,score=0,lives=3,time=300,timer,answered=false;
-function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active")}
-function start(){cur=0;score=0;lives=3;time=300;document.getElementById("score").textContent=0;document.getElementById("lives").textContent=3;show("game");render();clearInterval(timer);timer=setInterval(tick,1000)}
-function tick(){time--;let m=Math.floor(time/60),s=time%60;let el=document.getElementById("timer");el.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");el.classList.toggle("danger",time<=45);if(time<=0)finish(false)}
-function render(){let c=challenges[cur];answered=false;document.getElementById("step").textContent=cur;document.getElementById("fill").style.width=(cur*20)+"%";document.getElementById("tag").textContent=c.tag;document.getElementById("title").textContent=c.title;document.getElementById("text").textContent=c.text;document.getElementById("question").textContent=c.q;document.getElementById("feedback").className="feedback";document.getElementById("next").className="btn hidden";let box=document.getElementById("choices");box.innerHTML="";c.a.forEach((x,i)=>{let b=document.createElement("button");b.className="choice";b.innerHTML="<b>"+String.fromCharCode(65+i)+".</b> "+x;b.onclick=()=>answer(i,b);box.appendChild(b)});document.getElementById("boardText").textContent=cur===0?"“Algo está fallando… necesitamos trabajar como equipo.”":cur===1?"“La información debe llegar a todos.”":cur===2?"“Una buena idea puede mejorar con otra.”":cur===3?"“Ordenar también es trabajar en equipo.”":"“Ahora conviertan la colaboración en innovación.”"}
-function answer(i,b){if(answered)return;answered=true;let c=challenges[cur];document.querySelectorAll(".choice").forEach(x=>x.disabled=true);let fb=document.getElementById("feedback");if(i===c.ok){b.classList.add("ok");score+=100;fb.className="feedback show good";fb.innerHTML="🎉 <b>¡Reto superado!</b> "+c.why;[1,2,3,4,5].slice(0,cur+1).forEach(n=>document.getElementById("p"+n).classList.add("united"));}else{b.classList.add("no");lives--;document.getElementById("lives").textContent=lives;fb.className="feedback show bad";fb.innerHTML="💥 <b>La puerta sigue cerrada.</b> "+c.why;if(lives<=0){setTimeout(()=>finish(false),900);return}}document.getElementById("score").textContent=score;document.getElementById("next").className="btn";document.getElementById("next").textContent=cur===4?"🔓 ABRIR PUERTA":"➡️ Siguiente reto"}
-function next(){if(cur<4){cur++;render()}else finish(true)}
-function finish(won){clearInterval(timer);document.getElementById("finalScore").textContent=score;if(won){document.getElementById("endIcon").textContent="🏆🔓";document.getElementById("endTitle").textContent="¡ESCAPASTE!";document.getElementById("endText").innerHTML="<b>¡Equipo reconstruido!</b><br>Cuando los miembros trabajan por un proyecto común, comparten información, aportan ideas, mejoran la organización interna y promueven la innovación, las relaciones dentro de la organización se fortalecen.";document.getElementById("code").textContent="EQUIPO"}else{document.getElementById("endIcon").textContent="🔐";document.getElementById("endTitle").textContent="La oficina sigue cerrada";document.getElementById("endText").textContent="No lograste completar la misión. Intenta de nuevo y reconstruye las relaciones del equipo.";document.getElementById("code").textContent="INTÉNTALO"}show("end")}
-function hint(t){alert(t)}function home(){clearInterval(timer);show("home")}
+
+
+/* AUDIO */
+
+function audio(){
+
+if(!audioCtx){
+
+audioCtx=
+new(window.AudioContext||window.webkitAudioContext)();
+
+}
+
+}
+
+function tone(freq,duration,type="sine"){
+
+try{
+
+audio();
+
+let osc=audioCtx.createOscillator();
+
+let gain=audioCtx.createGain();
+
+osc.type=type;
+
+osc.frequency.value=freq;
+
+gain.gain.setValueAtTime(
+.08,
+audioCtx.currentTime
+);
+
+gain.gain.exponentialRampToValueAtTime(
+.001,
+audioCtx.currentTime+duration
+);
+
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc.start();
+
+osc.stop(
+audioCtx.currentTime+duration
+);
+
+}catch(e){}
+
+}
+
+function successSound(){
+
+tone(523,.12);
+
+setTimeout(
+()=>tone(659,.12),
+100
+);
+
+setTimeout(
+()=>tone(784,.2),
+200
+);
+
+}
+
+function errorSound(){
+
+tone(180,.18,"sawtooth");
+
+setTimeout(
+()=>tone(130,.22,"sawtooth"),
+130
+);
+
+}
+
+function victorySound(){
+
+tone(523,.12);
+
+setTimeout(
+()=>tone(659,.12),
+130
+);
+
+setTimeout(
+()=>tone(784,.12),
+260
+);
+
+setTimeout(
+()=>tone(1046,.35),
+390
+);
+
+}
+
+
+/* PANTALLAS */
+
+function show(id){
+
+document
+.querySelectorAll(".screen")
+.forEach(x=>
+x.classList.remove("active")
+);
+
+document
+.getElementById(id)
+.classList.add("active");
+
+}
+
+
+/* INICIO */
+
+function start(){
+
+step=0;
+score=0;
+lives=3;
+time=300;
+
+document.getElementById("score").textContent=0;
+
+document.getElementById("lives").textContent=3;
+
+document.getElementById("time").textContent="05:00";
+
+document
+.getElementById("timerPill")
+.classList.remove("timer-warning");
+
+
+for(let i=1;i<=6;i++){
+
+document
+.getElementById("p"+i)
+.classList.remove("united");
+
+}
+
+
+document
+.getElementById("door")
+.classList.remove("unlocked");
+
+document
+.getElementById("door")
+.classList.add("locked");
+
+document
+.getElementById("lock")
+.textContent="🔒";
+
+
+show("game");
+
+render();
+
+clearInterval(timer);
+
+timer=setInterval(()=>{
+
+time--;
+
+let m=Math.floor(time/60);
+
+let s=time%60;
+
+document.getElementById("time").textContent=
+String(m).padStart(2,"0")+
+":"+
+String(s).padStart(2,"0");
+
+
+if(time<=60){
+
+document
+.getElementById("timerPill")
+.classList.add("timer-warning");
+
+}
+
+if(time===60){
+
+showWarning();
+
+}
+
+if(time<=0){
+
+clearInterval(timer);
+
+end();
+
+}
+
+},1000);
+
+}
+
+
+/* ALERTA */
+
+function showWarning(){
+
+let m=document.getElementById("msg");
+
+m.textContent=
+"⚠️ ¡CUIDADO! ¡Solo queda 1 minuto!";
+
+m.className=
+"msg show warning";
+
+tone(300,.15,"square");
+
+setTimeout(
+()=>tone(300,.15,"square"),
+200
+);
+
+}
+
+
+/* RENDER */
+
+function render(){
+
+done=false;
+
+selected=[];
+
+pairFirst=null;
+
+pairGood=0;
+
+let d=data[step];
+
+
+document.getElementById("fill").style.width=
+((step)/5*100)+"%";
+
+
+document.getElementById("tag").textContent=
+d.tag;
+
+document.getElementById("title").textContent=
+d.title;
+
+document.getElementById("desc").textContent=
+d.desc;
+
+document.getElementById("msg").className=
+"msg";
+
+document.getElementById("action").style.display=
+"inline-block";
+
+
+let a=document.getElementById("area");
+
+a.innerHTML="";
+
+
+/* SELECCIÓN */
+
+if(d.items){
+
+let box=document.createElement("div");
+
+box.className="items";
+
+
+d.items.forEach((it,i)=>{
+
+let b=document.createElement("button");
+
+b.className="item";
+
+b.textContent=it[0];
+
+b.onclick=()=>{
+
+if(done)return;
+
+b.classList.toggle("selected");
+
+if(b.classList.contains("selected"))
+
+selected.push(i);
+
+else
+
+selected=
+selected.filter(x=>x!==i);
+
+};
+
+box.appendChild(b);
+
+});
+
+a.appendChild(box);
+
+}
+
+
+/* ORDEN */
+
+if(d.order){
+
+let box=document.createElement("div");
+
+box.className="items";
+
+
+d.items.forEach((it,i)=>{
+
+let b=document.createElement("button");
+
+b.className="item";
+
+b.textContent=it[0];
+
+b.onclick=()=>{
+
+if(done || selected.includes(i))
+return;
+
+selected.push(i);
+
+b.classList.add("selected");
+
+b.disabled=true;
+
+};
+
+box.appendChild(b);
+
+});
+
+a.appendChild(box);
+
+}
+
+
+/* PAREJAS */
+
+if(d.pairs){
+
+d.pairs.forEach((p,i)=>{
+
+let row=document.createElement("div");
+
+row.className="slots";
+
+row.innerHTML=
+
+'<button class="item" data-p="'+i+'">'+
+p[0]+
+'</button>'+
+'<span>↔</span>'+
+'<button class="item" data-v="'+i+'">'+
+p[1]+
+'</button>';
+
+
+row.querySelector("[data-p]").onclick=
+()=>pair(i);
+
+row.querySelector("[data-v]").onclick=
+()=>pair(i);
+
+a.appendChild(row);
+
+});
+
+}
+
+
+/* INNOVACIÓN */
+
+if(d.cols){
+
+let grid=document.createElement("div");
+
+grid.className="items";
+
+
+d.cols.forEach((col,c)=>{
+
+let box=document.createElement("div");
+
+box.style.width="30%";
+
+box.innerHTML=
+"<b>Columna "+(c+1)+"</b>";
+
+
+col.forEach((x,i)=>{
+
+let b=document.createElement("button");
+
+b.className="item";
+
+b.style.display="block";
+
+b.style.width="100%";
+
+b.textContent=x;
+
+
+b.onclick=()=>{
+
+if(done)return;
+
+box.querySelectorAll(".item")
+.forEach(q=>
+q.classList.remove("selected")
+);
+
+b.classList.add("selected");
+
+selected[c]=i;
+
+};
+
+box.appendChild(b);
+
+});
+
+grid.appendChild(box);
+
+});
+
+a.appendChild(grid);
+
+}
+
+
+document.getElementById("board").textContent=[
+
+"Construye las bases.",
+
+"Haz circular la información.",
+
+"Las ideas se complementan.",
+
+"Ordena para coordinar.",
+
+"Convierte ideas en innovación."
+
+][step];
+
+}
+
+
+/* PAREJAS */
+
+function pair(i){
+
+if(done)return;
+
+
+if(pairFirst===null){
+
+pairFirst=i;
+
+return;
+
+}
+
+
+if(pairFirst===i){
+
+pairGood++;
+
+pairFirst=null;
+
+score+=50;
+
+document.getElementById("score").textContent=
+score;
+
+tone(600,.12);
+
+}else{
+
+pairFirst=null;
+
+lose(
+"Esa relación no corresponde. Intenta otra."
+);
+
+}
+
+}
+
+
+/* COMPROBAR */
+
+function act(){
+
+if(done)return;
+
+let d=data[step];
+
+let ok=false;
+
+
+/* SELECCIÓN */
+
+if(d.need){
+
+let correct=
+selected.filter(
+i=>d.items[i][1]===1
+).length;
+
+let bad=
+selected.filter(
+i=>d.items[i][1]===0
+).length;
+
+ok=
+correct===d.need &&
+bad===0;
+
+}
+
+
+/* ORDEN */
+
+else if(d.order){
+
+ok=
+JSON.stringify(selected)===
+JSON.stringify(
+d.order.map(x=>x-1)
+);
+
+}
+
+
+/* PAREJAS */
+
+else if(d.pairs){
+
+ok=pairGood===2;
+
+}
+
+
+/* INNOVACIÓN */
+
+else if(d.cols){
+
+ok=
+selected.length===3 &&
+selected.every(
+(x,i)=>x===d.correct[i]
+);
+
+}
+
+
+if(ok){
+
+done=true;
+
+score+=100;
+
+document.getElementById("score").textContent=
+score;
+
+successSound();
+
+good(
+"🎉 ¡RETO SUPERADO! ¡El equipo avanza!"
+);
+
+
+for(let i=1;i<=step+1;i++){
+
+document
+.getElementById("p"+i)
+.classList.add("united");
+
+}
+
+
+confetti();
+
+
+if(step===4){
+
+setTimeout(()=>{
+
+openDoor();
+
+},700);
+
+}else{
+
+setTimeout(()=>{
+
+document
+.getElementById("challenge")
+.classList.remove("success");
+
+step++;
+
+render();
+
+},1200);
+
+}
+
+}else{
+
+lose(
+"💥 Todavía no. Revisa lo que elegiste y vuelve a intentarlo."
+);
+
+}
+
+}
+
+
+/* CORRECTO */
+
+function good(t){
+
+let m=document.getElementById("msg");
+
+m.textContent=t;
+
+m.className=
+"msg show goodmsg";
+
+
+document
+.getElementById("challenge")
+.classList.add("success");
+
+}
+
+
+/* ERROR */
+
+function lose(t){
+
+lives--;
+
+document.getElementById("lives").textContent=
+lives;
+
+errorSound();
+
+
+let box=
+document.getElementById("challenge");
+
+box.classList.remove("error");
+
+void box.offsetWidth;
+
+box.classList.add("error");
+
+
+let m=
+document.getElementById("msg");
+
+m.textContent=t;
+
+m.className=
+"msg show badmsg";
+
+
+if(lives<=0){
+
+setTimeout(()=>{
+
+end();
+
+},700);
+
+}
+
+}
+
+
+/* CONFETI */
+
+function confetti(){
+
+let emojis=[
+"🎉",
+"✨",
+"⭐",
+"💜",
+"💙",
+"🌸"
+];
+
+
+for(let i=0;i<22;i++){
+
+let c=
+document.createElement("div");
+
+c.className="confetti";
+
+c.textContent=
+emojis[
+Math.floor(
+Math.random()*emojis.length
+)
+];
+
+c.style.left=
+Math.random()*100+"vw";
+
+c.style.animationDelay=
+Math.random()*.4+"s";
+
+document.body.appendChild(c);
+
+
+setTimeout(()=>{
+
+c.remove();
+
+},1800);
+
+}
+
+}
+
+
+/* PUERTA */
+
+function openDoor(){
+
+let door=
+document.getElementById("door");
+
+door.classList.remove("locked");
+
+door.classList.add("unlocked");
+
+document.getElementById("lock")
+.textContent="🔓";
+
+victorySound();
+
+
+setTimeout(()=>{
+
+end();
+
+},1800);
+
+}
+
+
+/* FINAL */
+
+function end(){
+
+clearInterval(timer);
+
+document.getElementById("final")
+.textContent=score;
+
+show("end");
+
+}
+
 </script>
-</body></html>
+
+</body>
+</html>
