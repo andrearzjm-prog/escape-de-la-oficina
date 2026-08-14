@@ -240,8 +240,6 @@ h2{
   font-size:60px;
 }
 
-/* PUERTA */
-
 .door{
   position:absolute;
   right:20px;
@@ -413,25 +411,6 @@ h2{
   border-color:#8c78ce;
 }
 
-.option.correct{
-  background:#eaf9f1;
-  border-color:#51b889;
-}
-
-.option.wrong{
-  background:#fff0f1;
-  border-color:#e56d76;
-}
-
-.slots{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  margin:12px 0;
-}
-
 .msg{
   margin-top:12px;
   padding:12px;
@@ -458,8 +437,6 @@ h2{
   background:#fff5d9;
   color:#8a6200;
 }
-
-/* CONFETI */
 
 .confetti{
   position:fixed;
@@ -497,8 +474,6 @@ h2{
     transform:scale(1.08);
   }
 }
-
-/* CELULAR */
 
 @media(max-width:650px){
 
@@ -560,10 +535,6 @@ h2{
     padding:17px;
   }
 
-  .items{
-    gap:7px;
-  }
-
   .item{
     padding:10px 11px;
     font-size:13px;
@@ -572,14 +543,11 @@ h2{
   .option{
     font-size:13px;
   }
-
 }
 </style>
 </head>
 
 <body>
-
-<!-- INICIO -->
 
 <section id="home" class="screen active home">
 
@@ -611,9 +579,6 @@ Completa 5 retos para reconstruir el equipo y abrir la puerta.
 
 </section>
 
-
-<!-- JUEGO -->
-
 <section id="game" class="screen">
 
 <div class="top wrap">
@@ -638,8 +603,7 @@ Completa 5 retos para reconstruir el equipo y abrir la puerta.
 
 </div>
 
-
-<!-- EQUIPO -->
+<!-- PERSONAJES EN EL ORDEN SOLICITADO -->
 
 <div class="team">
 
@@ -664,17 +628,16 @@ Completa 5 retos para reconstruir el equipo y abrir la puerta.
 </div>
 
 <div class="team-person" id="p5">
-<span class="team-name">Laura</span>
-<span class="team-emoji">👩🏻‍💻</span>
-</div>
-
-<div class="team-person" id="p6">
 <span class="team-name">MyFa</span>
 <span class="team-emoji">👩🏻‍💻</span>
 </div>
 
+<div class="team-person" id="p6">
+<span class="team-name">Laura</span>
+<span class="team-emoji">👩🏻‍💻</span>
 </div>
 
+</div>
 
 <div class="wrap">
 
@@ -683,9 +646,6 @@ Completa 5 retos para reconstruir el equipo y abrir la puerta.
 </div>
 
 </div>
-
-
-<!-- OFICINA -->
 
 <div class="wrap office">
 
@@ -723,9 +683,6 @@ SALIDA
 
 </div>
 
-
-<!-- RETO -->
-
 <div class="wrap challenge" id="challenge">
 
 <span class="tag" id="tag"></span>
@@ -741,7 +698,7 @@ SALIDA
 <button
 id="action"
 class="btn"
-onclick="act()">
+onclick="act">
 
 Comprobar
 
@@ -750,9 +707,6 @@ Comprobar
 </div>
 
 </section>
-
-
-<!-- FINAL -->
 
 <section id="end" class="screen end">
 
@@ -794,7 +748,6 @@ onclick="start()">
 
 </section>
 
-
 <script>
 
 let step=0;
@@ -805,11 +758,6 @@ let timer;
 let done=false;
 let selected=[];
 let audioCtx=null;
-
-
-/* =========================
-   DATOS DE LOS RETOS
-========================= */
 
 const data=[
 
@@ -847,7 +795,7 @@ order:[1,2,3]
 {
 tag:"RETO 3 · IDEAS",
 title:"💡 Atrapa las buenas ideas",
-desc:"Selecciona las ideas que ayudan a mejorar el trabajo del equipo. Evita las que lo bloquean.",
+desc:"Selecciona las ideas que ayudan a mejorar el trabajo del equipo.",
 
 items:[
 ["Escuchar propuestas",1],
@@ -860,16 +808,12 @@ items:[
 need:3
 },
 
-/* ==================================
-   NUEVO RETO 4
-================================== */
-
 {
 tag:"RETO 4 · ENCUENTRA LA SOLUCIÓN",
 
 title:"🕵️‍♀️ Encuentra la solución",
 
-desc:"Lee cada situación de oficina y selecciona la opción que mejor ayuda a posibilitar y desarrollar las relaciones entre los miembros de la organización.",
+desc:"Lee cada situación y selecciona la opción que mejor ayuda a desarrollar las relaciones entre los miembros de la organización.",
 
 scenarios:[
 
@@ -915,8 +859,6 @@ correct:1
 ]
 },
 
-/* RETO 5 */
-
 {
 tag:"RETO 5 · INNOVA",
 
@@ -946,11 +888,6 @@ correct:[0,0,0]
 
 ];
 
-
-/* =========================
-   AUDIO
-========================= */
-
 function audio(){
 
 if(!audioCtx){
@@ -961,7 +898,6 @@ new(window.AudioContext||window.webkitAudioContext)();
 }
 
 }
-
 
 function tone(freq,duration,type="sine"){
 
@@ -1001,7 +937,6 @@ audioCtx.currentTime+duration
 
 }
 
-
 function successSound(){
 
 tone(523,.12);
@@ -1018,7 +953,6 @@ setTimeout(
 
 }
 
-
 function errorSound(){
 
 tone(180,.18,"sawtooth");
@@ -1029,7 +963,6 @@ setTimeout(
 );
 
 }
-
 
 function victorySound(){
 
@@ -1052,11 +985,6 @@ setTimeout(
 
 }
 
-
-/* =========================
-   PANTALLAS
-========================= */
-
 function show(id){
 
 document
@@ -1070,11 +998,6 @@ document
 .classList.add("active");
 
 }
-
-
-/* =========================
-   INICIO
-========================= */
 
 function start(){
 
@@ -1093,7 +1016,6 @@ document
 .getElementById("timerPill")
 .classList.remove("timer-warning");
 
-
 for(let i=1;i<=6;i++){
 
 document
@@ -1101,7 +1023,6 @@ document
 .classList.remove("united");
 
 }
-
 
 document
 .getElementById("door")
@@ -1114,7 +1035,6 @@ document
 document
 .getElementById("lock")
 .textContent="🔒";
-
 
 show("game");
 
@@ -1135,7 +1055,6 @@ String(m).padStart(2,"0")+
 ":"+
 String(s).padStart(2,"0");
 
-
 if(time<=60){
 
 document
@@ -1144,13 +1063,11 @@ document
 
 }
 
-
 if(time===60){
 
 showWarning();
 
 }
-
 
 if(time<=0){
 
@@ -1163,11 +1080,6 @@ end();
 },1000);
 
 }
-
-
-/* =========================
-   ALERTA
-========================= */
 
 function showWarning(){
 
@@ -1187,11 +1099,6 @@ setTimeout(
 );
 
 }
-
-
-/* =========================
-   RENDER
-========================= */
 
 function render(){
 
@@ -1219,14 +1126,11 @@ document.getElementById("msg").className=
 document.getElementById("action").style.display=
 "inline-block";
 
+document.getElementById("action").onclick=act;
+
 let a=document.getElementById("area");
 
 a.innerHTML="";
-
-
-/* =========================
-   SELECCIÓN
-========================= */
 
 if(d.items){
 
@@ -1267,11 +1171,6 @@ a.appendChild(box);
 
 }
 
-
-/* =========================
-   ORDEN
-========================= */
-
 if(d.order){
 
 let box=document.createElement("div");
@@ -1306,11 +1205,6 @@ box.appendChild(b);
 a.appendChild(box);
 
 }
-
-
-/* =========================
-   NUEVO RETO 4
-========================= */
 
 if(d.scenarios){
 
@@ -1367,11 +1261,6 @@ a.appendChild(box);
 
 }
 
-
-/* =========================
-   INNOVACIÓN
-========================= */
-
 if(d.cols){
 
 let grid=document.createElement("div");
@@ -1426,9 +1315,6 @@ a.appendChild(grid);
 
 }
 
-
-/* PIZARRA */
-
 document.getElementById("board").textContent=[
 
 "Construye las bases.",
@@ -1445,11 +1331,6 @@ document.getElementById("board").textContent=[
 
 }
 
-
-/* =========================
-   COMPROBAR
-========================= */
-
 function act(){
 
 if(done)return;
@@ -1457,9 +1338,6 @@ if(done)return;
 let d=data[step];
 
 let ok=false;
-
-
-/* SELECCIÓN */
 
 if(d.need){
 
@@ -1479,9 +1357,6 @@ bad===0;
 
 }
 
-
-/* ORDEN */
-
 else if(d.order){
 
 ok=
@@ -1491,9 +1366,6 @@ d.order.map(x=>x-1)
 );
 
 }
-
-
-/* NUEVO RETO 4 */
 
 else if(d.scenarios){
 
@@ -1506,9 +1378,6 @@ selected[i]===scenario.correct
 
 }
 
-
-/* INNOVACIÓN */
-
 else if(d.cols){
 
 ok=
@@ -1518,11 +1387,6 @@ selected.every(
 );
 
 }
-
-
-/* =========================
-   CORRECTO
-========================= */
 
 if(ok){
 
@@ -1539,9 +1403,6 @@ good(
 "🎉 ¡RETO SUPERADO! ¡El equipo avanza!"
 );
 
-
-/* PERSONAJES */
-
 for(let i=1;i<=step+1;i++){
 
 document
@@ -1551,7 +1412,6 @@ document
 }
 
 confetti();
-
 
 if(step===4){
 
@@ -1577,14 +1437,7 @@ render();
 
 }
 
-}
-
-
-/* =========================
-   INCORRECTO
-========================= */
-
-else{
+}else{
 
 lose(
 "💥 Todavía no. Revisa tus respuestas y vuelve a intentarlo."
@@ -1593,11 +1446,6 @@ lose(
 }
 
 }
-
-
-/* =========================
-   CORRECTO
-========================= */
 
 function good(t){
 
@@ -1613,11 +1461,6 @@ document
 .classList.add("success");
 
 }
-
-
-/* =========================
-   ERROR
-========================= */
 
 function lose(t){
 
@@ -1637,7 +1480,6 @@ void box.offsetWidth;
 
 box.classList.add("error");
 
-
 let m=
 document.getElementById("msg");
 
@@ -1645,7 +1487,6 @@ m.textContent=t;
 
 m.className=
 "msg show badmsg";
-
 
 if(lives<=0){
 
@@ -1658,11 +1499,6 @@ end();
 }
 
 }
-
-
-/* =========================
-   CONFETI
-========================= */
 
 function confetti(){
 
@@ -1677,7 +1513,6 @@ let emojis=[
 "🥳"
 
 ];
-
 
 for(let i=0;i<22;i++){
 
@@ -1701,7 +1536,6 @@ Math.random()*.4+"s";
 
 document.body.appendChild(c);
 
-
 setTimeout(()=>{
 
 c.remove();
@@ -1711,11 +1545,6 @@ c.remove();
 }
 
 }
-
-
-/* =========================
-   PUERTA
-========================= */
 
 function openDoor(){
 
@@ -1738,11 +1567,6 @@ end();
 },1800);
 
 }
-
-
-/* =========================
-   FINAL
-========================= */
 
 function end(){
 
