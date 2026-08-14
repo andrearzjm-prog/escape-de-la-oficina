@@ -372,6 +372,57 @@ h2{
   background:#fff0f1;
 }
 
+.scenario{
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 5px 15px #0001;
+}
+
+.scenario h3{
+  margin-top:0;
+  color:#334b8e;
+}
+
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.option{
+  width:100%;
+  text-align:left;
+  padding:13px;
+  background:white;
+  border:2px solid #dce1ec;
+  border-radius:13px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.2s;
+}
+
+.option:hover{
+  transform:translateX(3px);
+  border-color:#9b7bd0;
+}
+
+.option.selected{
+  background:#f0edff;
+  border-color:#8c78ce;
+}
+
+.option.correct{
+  background:#eaf9f1;
+  border-color:#51b889;
+}
+
+.option.wrong{
+  background:#fff0f1;
+  border-color:#e56d76;
+}
+
 .slots{
   display:flex;
   flex-wrap:wrap;
@@ -515,6 +566,10 @@ h2{
 
   .item{
     padding:10px 11px;
+    font-size:13px;
+  }
+
+  .option{
     font-size:13px;
   }
 
@@ -712,12 +767,10 @@ Comprobar
 </h1>
 
 <p class="lead">
-
 🎉 ¡Excelente trabajo! 🎉
 <br>
 El equipo logró superar los obstáculos
 trabajando de manera colaborativa.
-
 </p>
 
 <div class="code">
@@ -751,10 +804,12 @@ let time=300;
 let timer;
 let done=false;
 let selected=[];
-let pairFirst=null;
-let pairGood=0;
 let audioCtx=null;
 
+
+/* =========================
+   DATOS DE LOS RETOS
+========================= */
 
 const data=[
 
@@ -762,6 +817,7 @@ const data=[
 tag:"RETO 1 · CONSTRUYE",
 title:"🧩 Construye el equipo",
 desc:"Haz clic en las 3 piezas que deben estar en la base de un equipo que trabaja unido.",
+
 items:[
 ["Objetivo común",1],
 ["Aislar departamentos",0],
@@ -769,6 +825,7 @@ items:[
 ["Compartir información",1],
 ["Competencia interna",0]
 ],
+
 need:3
 },
 
@@ -776,12 +833,14 @@ need:3
 tag:"RETO 2 · MENSAJE",
 title:"📨 Ordena el mensaje",
 desc:"Haz clic en las partes del mensaje en el orden correcto para que la información circule.",
+
 items:[
 ["1. Recibir información",1],
 ["2. Compartir con el equipo",2],
 ["3. Coordinar acciones",3],
 ["4. Guardar y ocultar",0]
 ],
+
 order:[1,2,3]
 },
 
@@ -789,6 +848,7 @@ order:[1,2,3]
 tag:"RETO 3 · IDEAS",
 title:"💡 Atrapa las buenas ideas",
 desc:"Selecciona las ideas que ayudan a mejorar el trabajo del equipo. Evita las que lo bloquean.",
+
 items:[
 ["Escuchar propuestas",1],
 ["Ignorar al compañero",0],
@@ -796,37 +856,100 @@ items:[
 ["Probar una mejora",1],
 ["No cambiar nunca",0]
 ],
+
 need:3
 },
 
+/* ==================================
+   NUEVO RETO 4
+================================== */
+
 {
-tag:"RETO 4 · ORGANIZA",
-title:"🗂️ Organiza la oficina",
-desc:"Relaciona cada elemento con el resultado que corresponde. Haz clic en una pareja por turno.",
-pairs:[
-["Funciones claras","Cada persona sabe qué hacer"],
-["Información compartida","Todos trabajan con datos actualizados"],
-["Tareas duplicadas","Confusión y pérdida de tiempo"]
+tag:"RETO 4 · ENCUENTRA LA SOLUCIÓN",
+
+title:"🕵️‍♀️ Encuentra la solución",
+
+desc:"Lee cada situación de oficina y selecciona la opción que mejor ayuda a posibilitar y desarrollar las relaciones entre los miembros de la organización.",
+
+scenarios:[
+
+{
+question:"👩🏻‍💼 Un compañero propone una idea durante una reunión, pero los demás lo interrumpen constantemente. ¿Qué debería hacer el equipo?",
+
+options:[
+"Ignorar la idea y continuar con la reunión.",
+"Escuchar al compañero y permitir que explique su propuesta.",
+"Cambiar de tema para ahorrar tiempo.",
+"Dejar que solamente hable el jefe."
 ],
-correct:[0,1]
+
+correct:1
 },
 
 {
-tag:"RETO 5 · INNOVA",
-title:"🚀 Crea la solución",
-desc:"Selecciona una opción de cada columna para construir una mejora completa.",
-cols:[
-["Problema: proceso lento","Problema: falta de orden"],
-["Idea: automatizar","Idea: eliminar información"],
-["Resultado: más agilidad","Resultado: más confusión"]
+question:"🤝 Dos compañeros tienen opiniones diferentes sobre cómo realizar una tarea. ¿Cuál es la mejor opción?",
+
+options:[
+"Discutir hasta que uno de los dos gane.",
+"Ignorar la opinión del otro compañero.",
+"Escuchar ambas propuestas y buscar un acuerdo.",
+"Dejar de trabajar juntos."
 ],
+
+correct:2
+},
+
+{
+question:"💡 Una compañera tiene una propuesta para mejorar un proceso de la oficina. ¿Qué ayuda a fortalecer la relación del equipo?",
+
+options:[
+"Decirle que su idea no sirve.",
+"Escuchar la propuesta y analizarla entre todos.",
+"Guardar la idea para uno mismo.",
+"Cambiar de tema inmediatamente."
+],
+
+correct:1
+}
+
+]
+},
+
+/* RETO 5 */
+
+{
+tag:"RETO 5 · INNOVA",
+
+title:"🚀 Crea la solución",
+
+desc:"Selecciona una opción de cada columna para construir una mejora completa.",
+
+cols:[
+[
+"Problema: proceso lento",
+"Problema: falta de orden"
+],
+
+[
+"Idea: automatizar",
+"Idea: eliminar información"
+],
+
+[
+"Resultado: más agilidad",
+"Resultado: más confusión"
+]
+],
+
 correct:[0,0,0]
 }
 
 ];
 
 
-/* AUDIO */
+/* =========================
+   AUDIO
+========================= */
 
 function audio(){
 
@@ -838,6 +961,7 @@ new(window.AudioContext||window.webkitAudioContext)();
 }
 
 }
+
 
 function tone(freq,duration,type="sine"){
 
@@ -864,6 +988,7 @@ audioCtx.currentTime+duration
 );
 
 osc.connect(gain);
+
 gain.connect(audioCtx.destination);
 
 osc.start();
@@ -875,6 +1000,7 @@ audioCtx.currentTime+duration
 }catch(e){}
 
 }
+
 
 function successSound(){
 
@@ -892,6 +1018,7 @@ setTimeout(
 
 }
 
+
 function errorSound(){
 
 tone(180,.18,"sawtooth");
@@ -902,6 +1029,7 @@ setTimeout(
 );
 
 }
+
 
 function victorySound(){
 
@@ -925,7 +1053,9 @@ setTimeout(
 }
 
 
-/* PANTALLAS */
+/* =========================
+   PANTALLAS
+========================= */
 
 function show(id){
 
@@ -942,7 +1072,9 @@ document
 }
 
 
-/* INICIO */
+/* =========================
+   INICIO
+========================= */
 
 function start(){
 
@@ -1012,11 +1144,13 @@ document
 
 }
 
+
 if(time===60){
 
 showWarning();
 
 }
+
 
 if(time<=0){
 
@@ -1031,7 +1165,9 @@ end();
 }
 
 
-/* ALERTA */
+/* =========================
+   ALERTA
+========================= */
 
 function showWarning(){
 
@@ -1053,7 +1189,9 @@ setTimeout(
 }
 
 
-/* RENDER */
+/* =========================
+   RENDER
+========================= */
 
 function render(){
 
@@ -1061,16 +1199,10 @@ done=false;
 
 selected=[];
 
-pairFirst=null;
-
-pairGood=0;
-
 let d=data[step];
-
 
 document.getElementById("fill").style.width=
 ((step)/5*100)+"%";
-
 
 document.getElementById("tag").textContent=
 d.tag;
@@ -1087,20 +1219,20 @@ document.getElementById("msg").className=
 document.getElementById("action").style.display=
 "inline-block";
 
-
 let a=document.getElementById("area");
 
 a.innerHTML="";
 
 
-/* SELECCIÓN */
+/* =========================
+   SELECCIÓN
+========================= */
 
 if(d.items){
 
 let box=document.createElement("div");
 
 box.className="items";
-
 
 d.items.forEach((it,i)=>{
 
@@ -1136,14 +1268,15 @@ a.appendChild(box);
 }
 
 
-/* ORDEN */
+/* =========================
+   ORDEN
+========================= */
 
 if(d.order){
 
 let box=document.createElement("div");
 
 box.className="items";
-
 
 d.items.forEach((it,i)=>{
 
@@ -1175,48 +1308,75 @@ a.appendChild(box);
 }
 
 
-/* PAREJAS */
+/* =========================
+   NUEVO RETO 4
+========================= */
 
-if(d.pairs){
+if(d.scenarios){
 
-d.pairs.forEach((p,i)=>{
+d.scenarios.forEach((scenario,sIndex)=>{
 
-let row=document.createElement("div");
+let box=document.createElement("div");
 
-row.className="slots";
+box.className="scenario";
 
-row.innerHTML=
+let question=document.createElement("h3");
 
-'<button class="item" data-p="'+i+'">'+
-p[0]+
-'</button>'+
-'<span>↔</span>'+
-'<button class="item" data-v="'+i+'">'+
-p[1]+
-'</button>';
+question.textContent=
+(sIndex+1)+". "+scenario.question;
 
+box.appendChild(question);
 
-row.querySelector("[data-p]").onclick=
-()=>pair(i);
+let options=document.createElement("div");
 
-row.querySelector("[data-v]").onclick=
-()=>pair(i);
+options.className="options";
 
-a.appendChild(row);
+scenario.options.forEach((option,oIndex)=>{
+
+let b=document.createElement("button");
+
+b.className="option";
+
+b.textContent=option;
+
+b.onclick=()=>{
+
+if(done)return;
+
+options
+.querySelectorAll(".option")
+.forEach(x=>
+x.classList.remove("selected")
+);
+
+b.classList.add("selected");
+
+selected[sIndex]=oIndex;
+
+};
+
+options.appendChild(b);
+
+});
+
+box.appendChild(options);
+
+a.appendChild(box);
 
 });
 
 }
 
 
-/* INNOVACIÓN */
+/* =========================
+   INNOVACIÓN
+========================= */
 
 if(d.cols){
 
 let grid=document.createElement("div");
 
 grid.className="items";
-
 
 d.cols.forEach((col,c)=>{
 
@@ -1226,7 +1386,6 @@ box.style.width="30%";
 
 box.innerHTML=
 "<b>Columna "+(c+1)+"</b>";
-
 
 col.forEach((x,i)=>{
 
@@ -1239,7 +1398,6 @@ b.style.display="block";
 b.style.width="100%";
 
 b.textContent=x;
-
 
 b.onclick=()=>{
 
@@ -1269,6 +1427,8 @@ a.appendChild(grid);
 }
 
 
+/* PIZARRA */
+
 document.getElementById("board").textContent=[
 
 "Construye las bases.",
@@ -1277,7 +1437,7 @@ document.getElementById("board").textContent=[
 
 "Las ideas se complementan.",
 
-"Ordena para coordinar.",
+"Escucha, dialoga y busca acuerdos.",
 
 "Convierte ideas en innovación."
 
@@ -1286,49 +1446,9 @@ document.getElementById("board").textContent=[
 }
 
 
-/* PAREJAS */
-
-function pair(i){
-
-if(done)return;
-
-
-if(pairFirst===null){
-
-pairFirst=i;
-
-return;
-
-}
-
-
-if(pairFirst===i){
-
-pairGood++;
-
-pairFirst=null;
-
-score+=50;
-
-document.getElementById("score").textContent=
-score;
-
-tone(600,.12);
-
-}else{
-
-pairFirst=null;
-
-lose(
-"Esa relación no corresponde. Intenta otra."
-);
-
-}
-
-}
-
-
-/* COMPROBAR */
+/* =========================
+   COMPROBAR
+========================= */
 
 function act(){
 
@@ -1373,11 +1493,16 @@ d.order.map(x=>x-1)
 }
 
 
-/* PAREJAS */
+/* NUEVO RETO 4 */
 
-else if(d.pairs){
+else if(d.scenarios){
 
-ok=pairGood===2;
+ok=
+selected.length===d.scenarios.length &&
+d.scenarios.every(
+(scenario,i)=>
+selected[i]===scenario.correct
+);
 
 }
 
@@ -1395,6 +1520,10 @@ selected.every(
 }
 
 
+/* =========================
+   CORRECTO
+========================= */
+
 if(ok){
 
 done=true;
@@ -1411,6 +1540,8 @@ good(
 );
 
 
+/* PERSONAJES */
+
 for(let i=1;i<=step+1;i++){
 
 document
@@ -1418,7 +1549,6 @@ document
 .classList.add("united");
 
 }
-
 
 confetti();
 
@@ -1447,10 +1577,17 @@ render();
 
 }
 
-}else{
+}
+
+
+/* =========================
+   INCORRECTO
+========================= */
+
+else{
 
 lose(
-"💥 Todavía no. Revisa lo que elegiste y vuelve a intentarlo."
+"💥 Todavía no. Revisa tus respuestas y vuelve a intentarlo."
 );
 
 }
@@ -1458,7 +1595,9 @@ lose(
 }
 
 
-/* CORRECTO */
+/* =========================
+   CORRECTO
+========================= */
 
 function good(t){
 
@@ -1469,7 +1608,6 @@ m.textContent=t;
 m.className=
 "msg show goodmsg";
 
-
 document
 .getElementById("challenge")
 .classList.add("success");
@@ -1477,7 +1615,9 @@ document
 }
 
 
-/* ERROR */
+/* =========================
+   ERROR
+========================= */
 
 function lose(t){
 
@@ -1487,7 +1627,6 @@ document.getElementById("lives").textContent=
 lives;
 
 errorSound();
-
 
 let box=
 document.getElementById("challenge");
@@ -1521,17 +1660,22 @@ end();
 }
 
 
-/* CONFETI */
+/* =========================
+   CONFETI
+========================= */
 
 function confetti(){
 
 let emojis=[
+
 "🎉",
 "✨",
 "⭐",
 "💜",
 "💙",
-"🌸"
+"🌸",
+"🥳"
+
 ];
 
 
@@ -1569,7 +1713,9 @@ c.remove();
 }
 
 
-/* PUERTA */
+/* =========================
+   PUERTA
+========================= */
 
 function openDoor(){
 
@@ -1585,7 +1731,6 @@ document.getElementById("lock")
 
 victorySound();
 
-
 setTimeout(()=>{
 
 end();
@@ -1595,7 +1740,9 @@ end();
 }
 
 
-/* FINAL */
+/* =========================
+   FINAL
+========================= */
 
 function end(){
 
