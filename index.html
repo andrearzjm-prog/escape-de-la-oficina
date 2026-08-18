@@ -52,7 +52,9 @@ button{
  cursor:pointer;
 }
 
-button:active{transform:scale(.94)}
+button:active{
+ transform:scale(.94);
+}
 
 .bigButton{
  font-size:20px;
@@ -73,6 +75,7 @@ button:active{transform:scale(.94)}
  font-size:12px;
  font-weight:bold;
  text-align:center;
+ transition:.3s;
 }
 
 .character span{
@@ -254,7 +257,9 @@ button:active{transform:scale(.94)}
  margin:auto;
 }
 
-.sequenceOption{margin:0}
+.sequenceOption{
+ margin:0;
+}
 
 /* REACCION */
 
@@ -270,7 +275,9 @@ button:active{transform:scale(.94)}
 
 /* FINAL */
 
-.finalIcon{font-size:80px}
+.finalIcon{
+ font-size:80px;
+}
 
 .rank{
  font-size:25px;
@@ -278,7 +285,9 @@ button:active{transform:scale(.94)}
  margin:15px;
 }
 
-.hidden{display:none!important}
+.hidden{
+ display:none!important;
+}
 
 @media(max-width:650px){
 
@@ -305,7 +314,7 @@ button:active{transform:scale(.94)}
 
 <div id="app">
 
-<!-- INICIO -->
+<!-- ================= INICIO ================= -->
 
 <div id="startScreen" class="screen active">
 
@@ -362,7 +371,7 @@ y consigue escapar.
 </div>
 
 
-<!-- JUEGO -->
+<!-- ================= JUEGO ================= -->
 
 <div id="gameScreen" class="screen">
 
@@ -459,7 +468,7 @@ align-items:center;
 </div>
 
 
-<!-- FINAL -->
+<!-- ================= FINAL ================= -->
 
 <div id="finalScreen" class="screen">
 
@@ -473,9 +482,7 @@ align-items:center;
 <script>
 
 /* =====================================================
-SONIDOS
-Se generan con Web Audio, por lo que NO necesitas
-subir archivos MP3.
+ AUDIO
 ===================================================== */
 
 let audioCtx=null;
@@ -485,8 +492,8 @@ function initAudio(){
  if(!audioCtx){
 
   const AudioContext=
-   window.AudioContext ||
-   window.webkitAudioContext;
+  window.AudioContext ||
+  window.webkitAudioContext;
 
   if(AudioContext){
    audioCtx=new AudioContext();
@@ -494,9 +501,9 @@ function initAudio(){
  }
 
  if(audioCtx &&
-    audioCtx.state==="suspended"){
+ audioCtx.state==="suspended"){
 
-   audioCtx.resume();
+  audioCtx.resume();
 
  }
 }
@@ -513,50 +520,45 @@ function tone(
  if(!audioCtx)return;
 
  const oscillator=
-   audioCtx.createOscillator();
+ audioCtx.createOscillator();
 
  const gain=
-   audioCtx.createGain();
+ audioCtx.createGain();
 
  oscillator.type=type;
-
- oscillator.frequency.value=
-   frequency;
+ oscillator.frequency.value=frequency;
 
  gain.gain.setValueAtTime(
-   0,
-   audioCtx.currentTime+delay
+  0,
+  audioCtx.currentTime+delay
  );
 
  gain.gain.linearRampToValueAtTime(
-   volume,
-   audioCtx.currentTime+delay+.01
+  volume,
+  audioCtx.currentTime+delay+.01
  );
 
  gain.gain.exponentialRampToValueAtTime(
-   .001,
-   audioCtx.currentTime+
-   delay+
-   duration
+  .001,
+  audioCtx.currentTime+
+  delay+
+  duration
  );
 
  oscillator.connect(gain);
  gain.connect(audioCtx.destination);
 
  oscillator.start(
-   audioCtx.currentTime+delay
+  audioCtx.currentTime+delay
  );
 
  oscillator.stop(
-   audioCtx.currentTime+
-   delay+
-   duration+
-   .03
+  audioCtx.currentTime+
+  delay+
+  duration+.03
  );
 }
 
-
-/* SONIDO CORRECTO */
 
 function soundCorrect(){
 
@@ -565,11 +567,8 @@ function soundCorrect(){
  tone(523,.12,"sine",.09);
  tone(659,.12,"sine",.09,.12);
  tone(784,.22,"sine",.1,.24);
-
 }
 
-
-/* SONIDO ERROR */
 
 function soundWrong(){
 
@@ -577,11 +576,8 @@ function soundWrong(){
 
  tone(220,.18,"sawtooth",.06);
  tone(165,.28,"sawtooth",.06,.16);
-
 }
 
-
-/* SONIDO NIVEL SUPERADO */
 
 function soundLevel(){
 
@@ -591,11 +587,8 @@ function soundLevel(){
  tone(659,.12,"sine",.08,.12);
  tone(784,.12,"sine",.08,.24);
  tone(1046,.35,"sine",.11,.36);
-
 }
 
-
-/* SONIDO TIEMPO */
 
 function soundTime(){
 
@@ -604,11 +597,8 @@ function soundTime(){
  tone(700,.12,"square",.07);
  tone(500,.12,"square",.07,.15);
  tone(300,.35,"square",.08,.3);
-
 }
 
-
-/* SONIDO PUERTA */
 
 function soundDoor(){
 
@@ -618,11 +608,8 @@ function soundDoor(){
  tone(250,.18,"sawtooth",.06,.16);
  tone(500,.25,"sine",.09,.35);
  tone(800,.4,"sine",.11,.6);
-
 }
 
-
-/* SONIDO FINAL */
 
 function soundWin(){
 
@@ -633,11 +620,8 @@ function soundWin(){
  tone(784,.15,"sine",.09,.30);
  tone(1046,.2,"sine",.1,.45);
  tone(1318,.5,"sine",.12,.65);
-
 }
 
-
-/* SONIDO MEMORIA */
 
 function soundMemory(){
 
@@ -645,12 +629,11 @@ function soundMemory(){
 
  tone(440,.12,"sine",.06);
  tone(660,.12,"sine",.06,.13);
-
 }
 
 
 /* =====================================================
-VARIABLES
+ VARIABLES
 ===================================================== */
 
 let level=1;
@@ -660,29 +643,52 @@ let combo=0;
 let time=0;
 let timer=null;
 let running=false;
+
 let timers=[];
 
+/* Nueva semilla para cada partida */
+let gameSeed=0;
+
 const names=[
-"Andrea",
-"Janier",
-"Jessica",
-"MyFa",
-"Yonatan",
-"Laura"
+ "Andrea",
+ "Janier",
+ "Jessica",
+ "MyFa",
+ "Yonatan",
+ "Laura"
 ];
 
 const emojis=[
-"👩🏻‍💼",
-"👨🏽‍💼",
-"👩🏼‍💼",
-"👩🏽‍💼",
-"👨🏻‍💼",
-"👩🏻‍💼"
+ "👩🏻‍💼",
+ "👨🏽‍💼",
+ "👩🏼‍💼",
+ "👩🏽‍💼",
+ "👨🏻‍💼",
+ "👩🏻‍💼"
 ];
 
 
+/* =====================================================
+ UTILIDADES
+===================================================== */
+
 function $(id){
  return document.getElementById(id);
+}
+
+
+function shuffle(array){
+
+ for(let i=array.length-1;i>0;i--){
+
+  const j=
+  Math.floor(Math.random()*(i+1));
+
+  [array[i],array[j]]=
+  [array[j],array[i]];
+ }
+
+ return array;
 }
 
 
@@ -703,7 +709,7 @@ function clearAll(){
 
 function wait(fn,ms){
 
- let t=setTimeout(fn,ms);
+ const t=setTimeout(fn,ms);
 
  timers.push(t);
 }
@@ -719,7 +725,10 @@ function update(){
  let hearts="";
 
  for(let i=0;i<3;i++){
-  hearts+=i<lives?"❤️":"🖤";
+
+  hearts+=
+  i<lives?"❤️":"🖤";
+
  }
 
  $("lives").textContent=hearts;
@@ -737,7 +746,14 @@ function message(text){
 }
 
 
-function setCharacter(n){
+/* =====================================================
+ PERSONAJE ALEATORIO
+===================================================== */
+
+function setRandomCharacter(){
+
+ const n=
+ Math.floor(Math.random()*6);
 
  for(let i=0;i<6;i++){
 
@@ -754,7 +770,7 @@ function setCharacter(n){
 
 
 /* =====================================================
-TEMPORIZADOR
+ TEMPORIZADOR
 ===================================================== */
 
 function startTimer(seconds){
@@ -793,14 +809,15 @@ function startTimer(seconds){
 
    }else{
 
-    message("⏰ ¡Se acabó el tiempo!");
+    message(
+     "⏰ ¡Se acabó el tiempo!"
+    );
 
     wait(()=>{
      loadLevel();
     },900);
 
    }
-
   }
 
  },1000);
@@ -808,7 +825,7 @@ function startTimer(seconds){
 
 
 /* =====================================================
-VIDAS
+ VIDA
 ===================================================== */
 
 function loseLife(){
@@ -828,12 +845,11 @@ function loseLife(){
   lose();
 
  }
-
 }
 
 
 /* =====================================================
-SIGUIENTE NIVEL
+ SIGUIENTE NIVEL
 ===================================================== */
 
 function nextLevel(){
@@ -853,37 +869,44 @@ function nextLevel(){
   win();
 
  }
-
 }
 
 
 /* =====================================================
-COMENZAR
+ COMENZAR PARTIDA
 ===================================================== */
 
 function startGame(){
 
  initAudio();
 
- soundLevel();
-
- $("startScreen")
-  .classList.remove("active");
-
- $("gameScreen")
-  .classList.add("active");
+ clearAll();
 
  level=1;
  lives=3;
  score=0;
  combo=0;
+ time=0;
+
+ gameSeed=
+ Date.now()+
+ Math.floor(Math.random()*999999);
+
+ $("startScreen")
+ .classList.remove("active");
+
+ $("finalScreen")
+ .classList.remove("active");
+
+ $("gameScreen")
+ .classList.add("active");
 
  loadLevel();
 }
 
 
 /* =====================================================
-CARGAR NIVEL
+ CARGAR NIVEL
 ===================================================== */
 
 function loadLevel(){
@@ -894,7 +917,11 @@ function loadLevel(){
 
  running=true;
 
- setCharacter((level-1)%6);
+ /*
+ Cada nivel recibe un personaje diferente,
+ pero el orden cambia según la partida.
+ */
+ setRandomCharacter();
 
  update();
 
@@ -911,7 +938,8 @@ function loadLevel(){
 
 
 /* =====================================================
-NIVEL 1
+ NIVEL 1
+ DECISIÓN RÁPIDA
 ===================================================== */
 
 function level1(){
@@ -920,82 +948,123 @@ function level1(){
  "⚡ DECISIÓN RÁPIDA";
 
  $("mission").textContent=
- "Andrea encuentra un problema antes de una reunión.";
+ "Toma la mejor decisión antes de una reunión.";
+
+ const questions=[
+ {
+  q:"Faltan documentos para una reunión. ¿Qué haces?",
+  a:[
+   "😶 Esperar",
+   "🤝 Organizar al equipo y repartir tareas",
+   "🚪 Cancelar"
+  ],
+  correct:1
+ },
+ {
+  q:"Un compañero necesita ayuda con una tarea urgente.",
+  a:[
+   "🙈 Ignorarlo",
+   "🤝 Ayudar y coordinar el trabajo",
+   "🚫 Decir que no importa"
+  ],
+  correct:1
+ },
+ {
+  q:"Hay varias tareas pendientes y poco tiempo.",
+  a:[
+   "🎯 Priorizar y distribuir las tareas",
+   "😴 Esperar hasta el final",
+   "🚫 No hacer nada"
+  ],
+  correct:0
+ }
+ ];
+
+ const q=
+ questions[
+  Math.floor(Math.random()*questions.length)
+ ];
 
  $("gameArea").innerHTML=`
 
  <div class="card center">
 
  <div style="font-size:60px">
- 👩🏻‍💼📋
+ ⚡📋
  </div>
 
  <div class="question">
-
- La reunión comienza en 5 minutos
- y faltan documentos.
-
- ¿Qué debería hacer Andrea?
-
+ ${q.q}
  </div>
 
- <button class="option"
- onclick="answer1(false)">
- 😶 Esperar
- </button>
-
- <button class="option"
- onclick="answer1(true)">
- 🤝 Organizar al equipo y repartir tareas
- </button>
-
- <button class="option"
- onclick="answer1(false)">
- 🚪 Cancelar
- </button>
+ <div id="levelOptions"></div>
 
  </div>
-
  `;
+
+ const options=
+ document.getElementById("levelOptions");
+
+ const answers=
+ q.a.map((text,index)=>({
+  text,
+  correct:index===q.correct
+ }));
+
+ shuffle(answers);
+
+ answers.forEach(item=>{
+
+  const button=
+  document.createElement("button");
+
+  button.className="option";
+  button.textContent=item.text;
+
+  button.onclick=()=>{
+
+   if(!running)return;
+
+   if(item.correct){
+
+    score+=50;
+    combo++;
+
+    soundCorrect();
+
+    message("🎉 ¡Excelente decisión!");
+
+    running=false;
+
+    wait(nextLevel,900);
+
+   }else{
+
+    loseLife();
+
+    message(
+     "❌ Esa decisión no es la mejor."
+    );
+
+   }
+
+  };
+
+  options.appendChild(button);
+
+ });
 
  startTimer(25);
 }
 
 
-function answer1(correct){
-
- if(!running)return;
-
- if(correct){
-
-  score+=50;
-  combo++;
-
-  soundCorrect();
-
-  message("🎉 ¡Excelente decisión!");
-
-  running=false;
-
-  wait(nextLevel,900);
-
- }else{
-
-  loseLife();
-
-  message(
-   "❌ Esa decisión no resuelve el problema."
-  );
-
- }
-
-}
-
-
 /* =====================================================
-NIVEL 2
-MEMORIA DESORDENADA
+ NIVEL 2
+ MEMORIA DESORDENADA
 ===================================================== */
+
+let memoryCorrect=[];
+let memorySelected=[];
 
 function level2(){
 
@@ -1003,7 +1072,7 @@ function level2(){
  "🧠 MEMORIA";
 
  $("mission").textContent=
- "Janier debe recordar qué objetos estaban en la oficina.";
+ "Memoriza los objetos que aparecen en la oficina.";
 
  $("gameArea").innerHTML=`
 
@@ -1014,7 +1083,7 @@ function level2(){
  </h3>
 
  <p id="memoryInstruction">
- Mira los objetos. Tienes unos segundos.
+ Mira con atención.
  </p>
 
  <div
@@ -1037,24 +1106,43 @@ function level2(){
  </button>
 
  </div>
-
  `;
 
 
- const correctObjects=[
-  "📁",
-  "☕",
-  "🔑",
-  "💻"
+ const sets=[
+
+ ["📁","☕","🔑","💻"],
+
+ ["📱","⭐","📌","🖨️"],
+
+ ["✏️","☕","📱","🔐"],
+
+ ["💻","📁","⭐","📱"]
+
  ];
 
 
- const extraObjects=[
-  "📱",
-  "🖨️",
-  "✏️",
-  "📌"
+ const correctObjects=
+ [...sets[
+  Math.floor(Math.random()*sets.length)
+ ]];
+
+ const extras=[
+  "📎",
+  "🗂️",
+  "📋",
+  "⌚",
+  "🖊️",
+  "🧾"
  ];
+
+
+ const extraObjects=
+ shuffle(
+  extras.filter(
+   e=>!correctObjects.includes(e)
+  )
+ ).slice(0,4);
 
 
  const allObjects=[
@@ -1065,30 +1153,39 @@ function level2(){
 
  const scene=$("memoryScene");
 
+ /*
+ Posiciones totalmente aleatorias.
+ */
 
- const positions=[
-  {left:12,top:18},
-  {left:65,top:10},
-  {left:37,top:42},
-  {left:78,top:55}
- ];
+ let positions=[];
 
+ while(positions.length<4){
 
- let visibleObjects=[
-  ...correctObjects
- ];
+  let left=
+   5+Math.random()*80;
 
+  let top=
+   5+Math.random()*75;
 
- for(let i=visibleObjects.length-1;i>0;i--){
+  let tooClose=
+   positions.some(p=>
+    Math.abs(p.left-left)<18 &&
+    Math.abs(p.top-top)<18
+   );
 
-  let j=Math.floor(
-   Math.random()*(i+1)
-  );
+  if(!tooClose){
 
-  [visibleObjects[i],visibleObjects[j]]=
-  [visibleObjects[j],visibleObjects[i]];
+   positions.push({
+    left,
+    top
+   });
 
+  }
  }
+
+
+ const visibleObjects=
+ shuffle([...correctObjects]);
 
 
  visibleObjects.forEach((emoji,index)=>{
@@ -1136,39 +1233,27 @@ function level2(){
 }
 
 
-let memoryCorrect=[];
-let memorySelected=[];
-
-
-function showMemoryOptions(objects,correct){
+function showMemoryOptions(
+ objects,
+ correct
+){
 
  memoryCorrect=correct;
-
  memorySelected=[];
 
- const box=$("memoryChoices");
+ const box=
+ $("memoryChoices");
 
  box.innerHTML="";
 
  box.classList.remove("hidden");
 
  $("memoryConfirm")
-  .classList.remove("hidden");
+ .classList.remove("hidden");
 
 
- let shuffled=[...objects];
-
-
- for(let i=shuffled.length-1;i>0;i--){
-
-  let j=Math.floor(
-   Math.random()*(i+1)
-  );
-
-  [shuffled[i],shuffled[j]]=
-  [shuffled[j],shuffled[i]];
-
- }
+ let shuffled=
+ shuffle([...objects]);
 
 
  shuffled.forEach(emoji=>{
@@ -1182,23 +1267,24 @@ function showMemoryOptions(objects,correct){
 
   button.dataset.emoji=emoji;
 
-
   button.onclick=function(){
 
    if(!running)return;
 
    let value=
-    button.dataset.emoji;
+   button.dataset.emoji;
 
 
    if(memorySelected.includes(value)){
 
     memorySelected=
-     memorySelected.filter(
-      x=>x!==value
-     );
+    memorySelected.filter(
+     x=>x!==value
+    );
 
-    button.classList.remove("selected");
+    button.classList.remove(
+     "selected"
+    );
 
    }else{
 
@@ -1213,17 +1299,15 @@ function showMemoryOptions(objects,correct){
 
     memorySelected.push(value);
 
-    button.classList.add("selected");
-
+    button.classList.add(
+     "selected"
+    );
    }
-
   };
-
 
   box.appendChild(button);
 
  });
-
 }
 
 
@@ -1234,7 +1318,7 @@ function checkMemory(){
  if(memorySelected.length!==4){
 
   message(
-   "⚠️ Debes seleccionar 4 objetos."
+   "⚠️ Selecciona exactamente 4."
   );
 
   return;
@@ -1252,25 +1336,25 @@ function checkMemory(){
   running=false;
 
   score+=80;
-
   combo++;
 
   soundCorrect();
 
   document
-   .querySelectorAll(".memoryChoice")
-   .forEach(btn=>{
+  .querySelectorAll(".memoryChoice")
+  .forEach(btn=>{
 
-    if(memoryCorrect.includes(
-     btn.dataset.emoji
-    )){
+   if(memoryCorrect.includes(
+    btn.dataset.emoji
+   )){
 
-     btn.classList.add("correct");
+    btn.classList.add(
+     "correct"
+    );
 
-    }
+   }
 
-   });
-
+  });
 
   message(
    "🎉 ¡Memoria perfecta!"
@@ -1283,44 +1367,44 @@ function checkMemory(){
   loseLife();
 
   document
-   .querySelectorAll(".memoryChoice")
-   .forEach(btn=>{
+  .querySelectorAll(".memoryChoice")
+  .forEach(btn=>{
 
-    if(
-     memorySelected.includes(
-      btn.dataset.emoji
-     ) &&
-     !memoryCorrect.includes(
-      btn.dataset.emoji
-     )
-    ){
+   if(
+    memorySelected.includes(
+     btn.dataset.emoji
+    ) &&
+    !memoryCorrect.includes(
+     btn.dataset.emoji
+    )
+   ){
 
-     btn.classList.add("wrong");
+    btn.classList.add("wrong");
 
-    }
+   }
 
-   });
-
+  });
 
   message(
-   "❌ No todos eran correctos."
+   "❌ Hay objetos incorrectos."
   );
 
   memorySelected=[];
 
   document
-   .querySelectorAll(".memoryChoice")
-   .forEach(btn=>{
-    btn.classList.remove("selected");
-   });
-
+  .querySelectorAll(".memoryChoice")
+  .forEach(btn=>{
+   btn.classList.remove(
+    "selected"
+   );
+  });
  }
-
 }
 
 
 /* =====================================================
-NIVEL 3
+ NIVEL 3
+ PREGUNTA
 ===================================================== */
 
 function level3(){
@@ -1329,76 +1413,123 @@ function level3(){
  "❓ PREGUNTA";
 
  $("mission").textContent=
- "Jessica debe responder correctamente.";
+ "Responde correctamente.";
+
+ const questions=[
+
+ {
+  q:"¿Qué ayuda a desarrollar mejores relaciones?",
+  a:[
+   "🚫 No participar",
+   "🤝 Participar y valorar las ideas",
+   "😶 Trabajar siempre solo"
+  ],
+  c:1
+ },
+
+ {
+  q:"¿Qué ocurre cuando se escuchan las ideas del equipo?",
+  a:[
+   "💡 Pueden aparecer nuevas soluciones",
+   "🚫 Nada cambia",
+   "🙈 Se elimina la participación"
+  ],
+  c:0
+ },
+
+ {
+  q:"¿Qué fortalece el trabajo en equipo?",
+  a:[
+   "🤝 Cooperación y participación",
+   "😡 Ignorar a los demás",
+   "🚪 Trabajar aislado"
+  ],
+  c:0
+ }
+
+ ];
+
+ const q=
+ questions[
+  Math.floor(Math.random()*questions.length)
+ ];
 
  $("gameArea").innerHTML=`
 
  <div class="card center">
 
  <div style="font-size:60px">
- 👩🏼‍💼💬
+ 💬❓
  </div>
 
  <div class="question">
-
- ¿Por qué es importante escuchar
- las ideas de los compañeros?
-
+ ${q.q}
  </div>
 
- <button class="option"
- onclick="answer3(false)">
- 😶 Para no trabajar
- </button>
-
- <button class="option"
- onclick="answer3(true)">
- 🤝 Porque fortalece las relaciones
- </button>
-
- <button class="option"
- onclick="answer3(false)">
- 🚫 Para evitar participar
- </button>
+ <div id="qOptions"></div>
 
  </div>
-
  `;
+
+ const answers=
+ q.a.map((text,index)=>({
+  text,
+  correct:index===q.c
+ }));
+
+ shuffle(answers);
+
+ answers.forEach(item=>{
+
+  let button=
+  document.createElement("button");
+
+  button.className="option";
+  button.textContent=item.text;
+
+  button.onclick=()=>{
+
+   if(!running)return;
+
+   if(item.correct){
+
+    score+=50;
+    combo++;
+
+    soundCorrect();
+
+    message(
+     "🎉 ¡Correcto!"
+    );
+
+    running=false;
+
+    wait(nextLevel,900);
+
+   }else{
+
+    loseLife();
+
+    message(
+     "❌ Respuesta incorrecta."
+    );
+
+   }
+
+  };
+
+  $("qOptions")
+  .appendChild(button);
+
+ });
 
  startTimer(25);
 }
 
 
-function answer3(correct){
-
- if(!running)return;
-
- if(correct){
-
-  score+=50;
-  combo++;
-
-  soundCorrect();
-
-  message("🎉 ¡Correcto!");
-
-  running=false;
-
-  wait(nextLevel,900);
-
- }else{
-
-  loseLife();
-
-  message("❌ Intenta nuevamente.");
-
- }
-
-}
-
-
 /* =====================================================
-NIVEL 4
+ NIVEL 4
+ ATRAPA
 ===================================================== */
 
 function level4(){
@@ -1407,14 +1538,20 @@ function level4(){
  "🎮 ATRAPA LO CORRECTO";
 
  $("mission").textContent=
- "Yonatan debe atrapar 8 estrellas y evitar las bombas.";
+ "Atrapa 8 estrellas y evita las bombas.";
 
  $("gameArea").innerHTML=`
 
- <div id="playArea" class="playArea"></div>
+ <div id="playArea"
+ class="playArea"></div>
+
+ <p class="center">
+ ⭐ Estrellas: <b id="starCount">0</b>/8
+ </p>
  `;
 
  let area=$("playArea");
+
  let points=0;
 
 
@@ -1422,21 +1559,22 @@ function level4(){
 
   if(!running)return;
 
-  let good=Math.random()>0.3;
+  let good=
+  Math.random()>0.32;
 
   let item=
-   document.createElement("div");
+  document.createElement("div");
 
   item.className="falling";
 
   item.textContent=
-   good?"⭐":"💣";
+  good?"⭐":"💣";
 
   item.style.left=
-   (5+Math.random()*85)+"%";
+  (3+Math.random()*90)+"%";
 
   item.style.top=
-   (5+Math.random()*80)+"%";
+  (3+Math.random()*85)+"%";
 
   area.appendChild(item);
 
@@ -1451,13 +1589,16 @@ function level4(){
 
     points++;
 
+    $("starCount")
+    .textContent=points;
+
     score+=15;
     combo++;
 
     soundCorrect();
 
     message(
-     "⭐ "+points+" / 8"
+     "⭐ ¡Bien! "+points+"/8"
     );
 
     if(points>=8){
@@ -1471,33 +1612,33 @@ function level4(){
      );
 
      wait(nextLevel,900);
-
     }
 
    }else{
 
     loseLife();
 
-    message("💣 ¡Cuidado!");
+    message(
+     "💣 ¡Cuidado!"
+    );
 
    }
-
   };
 
 
   wait(()=>{
 
    if(item.parentNode)
-    item.remove();
+   item.remove();
 
-  },900);
-
+  },1000);
  }
 
 
- let spawn=setInterval(
+ let spawn=
+ setInterval(
   createItem,
-  650
+  600
  );
 
  timers.push(spawn);
@@ -1507,7 +1648,8 @@ function level4(){
 
 
 /* =====================================================
-NIVEL 5
+ NIVEL 5
+ DECISIÓN
 ===================================================== */
 
 function level5(){
@@ -1516,80 +1658,124 @@ function level5(){
  "💬 ¿QUÉ HARÍAS?";
 
  $("mission").textContent=
- "MyFa debe resolver una situación con el equipo.";
+ "Resuelve una situación de equipo.";
+
+ const scenarios=[
+
+ {
+  q:"Un compañero propone una idea diferente a la tuya.",
+  a:[
+   "😡 Decir que mi idea es mejor",
+   "👂 Escuchar y analizar su propuesta",
+   "🙈 Ignorarla"
+  ],
+  c:1
+ },
+
+ {
+  q:"Dos compañeros tienen opiniones diferentes.",
+  a:[
+   "🔥 Hacer que discutan",
+   "🤝 Escuchar a ambos y buscar un acuerdo",
+   "🚪 Ignorar el problema"
+  ],
+  c:1
+ },
+
+ {
+  q:"El equipo necesita una solución nueva.",
+  a:[
+   "💡 Permitir que todos aporten ideas",
+   "🤐 Elegir sin consultar",
+   "🚫 No escuchar propuestas"
+  ],
+  c:0
+ }
+
+ ];
+
+ const q=
+ scenarios[
+  Math.floor(Math.random()*scenarios.length)
+ ];
 
  $("gameArea").innerHTML=`
 
  <div class="card center">
 
  <div style="font-size:60px">
- 👩🏽‍💼👥
+ 👥💬
  </div>
 
  <div class="question">
-
- Un compañero propone una idea
- diferente a la tuya.
-
- ¿Qué haces?
-
+ ${q.q}
  </div>
 
- <button class="option"
- onclick="answer5(false)">
- 😡 Decir que mi idea es mejor
- </button>
-
- <button class="option"
- onclick="answer5(true)">
- 👂 Escuchar y analizar su propuesta
- </button>
-
- <button class="option"
- onclick="answer5(false)">
- 🙈 Ignorarla
- </button>
+ <div id="level5Options"></div>
 
  </div>
-
  `;
+
+
+ let answers=
+ q.a.map((text,index)=>({
+  text,
+  correct:index===q.c
+ }));
+
+ shuffle(answers);
+
+
+ answers.forEach(item=>{
+
+  let button=
+  document.createElement("button");
+
+  button.className="option";
+  button.textContent=item.text;
+
+  button.onclick=()=>{
+
+   if(!running)return;
+
+   if(item.correct){
+
+    score+=50;
+    combo++;
+
+    soundCorrect();
+
+    message(
+     "🎉 ¡Muy buena decisión!"
+    );
+
+    running=false;
+
+    wait(nextLevel,900);
+
+   }else{
+
+    loseLife();
+
+    message(
+     "❌ Esa opción no ayuda al equipo."
+    );
+
+   }
+  };
+
+  $("level5Options")
+  .appendChild(button);
+
+ });
 
  startTimer(25);
 }
 
 
-function answer5(correct){
-
- if(!running)return;
-
- if(correct){
-
-  score+=50;
-  combo++;
-
-  soundCorrect();
-
-  message("🎉 ¡Muy bien!");
-
-  running=false;
-
-  wait(nextLevel,900);
-
- }else{
-
-  loseLife();
-
-  message(
-   "❌ Esa opción puede afectar el trabajo en equipo."
-  );
-
- }
-
-}
-
-
 /* =====================================================
-NIVEL 6
+ NIVEL 6
+ SECUENCIA
 ===================================================== */
 
 function level6(){
@@ -1598,47 +1784,42 @@ function level6(){
  "🧠 MEMORIA RÁPIDA";
 
  $("mission").textContent=
- "Laura debe memorizar la secuencia.";
+ "Memoriza la secuencia y elige la correcta.";
 
- let correct=[
-  "📁","☕","🔑","💻","⭐"
+ const symbols=[
+  "📁","☕","🔑","💻",
+  "⭐","📱","📌","✏️"
  ];
 
- let wrong1=[
-  "📁","🔑","☕","💻","⭐"
- ];
+ const sequence=
+ shuffle([...symbols])
+ .slice(0,5);
 
- let wrong2=[
-  "⭐","☕","📁","🔑","💻"
- ];
-
- let wrong3=[
-  "💻","📁","🔑","⭐","☕"
- ];
 
  let options=[
-  correct,
-  wrong1,
-  wrong2,
-  wrong3
+  sequence
  ];
 
+ while(options.length<4){
 
- for(let i=options.length-1;i>0;i--){
+  let fake=
+  shuffle([...sequence]);
 
-  let j=Math.floor(
-   Math.random()*(i+1)
-  );
+  if(
+   !options.some(
+    x=>x.join("")===fake.join("")
+   )
+  ){
 
-  [options[i],options[j]]=
-  [options[j],options[i]];
-
+   options.push(fake);
+  }
  }
 
 
- let correctIndex=
-  options.indexOf(correct);
+ shuffle(options);
 
+ const correctKey=
+ sequence.join("");
 
  $("gameArea").innerHTML=`
 
@@ -1665,24 +1846,21 @@ function level6(){
  </div>
 
  </div>
-
  `;
 
 
- let display=
-  $("sequenceDisplay");
-
-
- correct.forEach(emoji=>{
+ sequence.forEach(emoji=>{
 
   let item=
-   document.createElement("div");
+  document.createElement("div");
 
-  item.className="sequenceEmoji";
+  item.className=
+  "sequenceEmoji";
 
   item.textContent=emoji;
 
-  display.appendChild(item);
+  $("sequenceDisplay")
+  .appendChild(item);
 
  });
 
@@ -1692,34 +1870,37 @@ function level6(){
 
  wait(()=>{
 
-  display.innerHTML="";
+  $("sequenceDisplay")
+  .innerHTML="";
 
-  $("sequenceText").textContent=
-   "🤔 ¿Cuál era la correcta?";
+  $("sequenceText")
+  .textContent=
+  "🤔 ¿Cuál era la secuencia?";
 
   let box=
-   $("sequenceOptions");
+  $("sequenceOptions");
 
-  box.classList.remove("hidden");
+  box.classList.remove(
+   "hidden"
+  );
 
 
-  options.forEach((sequence,index)=>{
+  options.forEach(seq=>{
 
    let button=
-    document.createElement("button");
+   document.createElement("button");
 
    button.className=
-    "sequenceOption";
+   "sequenceOption";
 
    button.textContent=
-    sequence.join("   ");
+   seq.join("   ");
 
-
-   button.onclick=function(){
+   button.onclick=()=>{
 
     if(!running)return;
 
-    if(index===correctIndex){
+    if(seq.join("")===correctKey){
 
      score+=80;
      combo++;
@@ -1739,13 +1920,12 @@ function level6(){
      loseLife();
 
      message(
-      "❌ Esa no era la secuencia."
+      "❌ Esa no era."
      );
 
     }
 
    };
-
 
    box.appendChild(button);
 
@@ -1759,7 +1939,8 @@ function level6(){
 
 
 /* =====================================================
-NIVEL 7
+ NIVEL 7
+ REACCIÓN
 ===================================================== */
 
 function level7(){
@@ -1768,7 +1949,7 @@ function level7(){
  "⚡ REACCIÓN RÁPIDA";
 
  $("mission").textContent=
- "Pulsa SOLO cuando aparezca ⭐.";
+ "Pulsa cuando aparezca ⭐.";
 
  $("gameArea").innerHTML=`
 
@@ -1781,19 +1962,22 @@ function level7(){
 
  <button
  id="reactionButton"
- class="reactionButton"
- onclick="reactionClick()">
+ class="reactionButton">
+
  ⏳
+
  </button>
 
- <p>⭐ = tocar</p>
+ <p>
+ ⭐ = tocar
+ </p>
 
  </div>
-
  `;
 
 
- let button=$("reactionButton");
+ let button=
+ $("reactionButton");
 
  let ready=false;
  let points=0;
@@ -1807,14 +1991,16 @@ function level7(){
 
   button.textContent="⏳";
 
-  button.style.background="#ff6584";
+  button.style.background=
+  "#ff6584";
 
-  $("reactionText").textContent=
-   "Espera...";
+  $("reactionText")
+  .textContent=
+  "Espera...";
 
 
   let delay=
-   700+Math.random()*1400;
+  700+Math.random()*1600;
 
 
   wait(()=>{
@@ -1825,17 +2011,18 @@ function level7(){
 
    button.textContent="⭐";
 
-   button.style.background="#38a169";
+   button.style.background=
+   "#38a169";
 
-   $("reactionText").textContent=
-    "¡AHORA!";
+   $("reactionText")
+   .textContent=
+   "¡AHORA!";
 
   },delay);
-
  }
 
 
- window.reactionClick=function(){
+ button.onclick=function(){
 
   if(!running)return;
 
@@ -1848,7 +2035,9 @@ function level7(){
 
    soundCorrect();
 
-   message("⚡ ¡Rápido!");
+   message(
+    "⚡ ¡Rápido!"
+   );
 
 
    if(points>=6){
@@ -1889,7 +2078,8 @@ function level7(){
 
 
 /* =====================================================
-NIVEL 8
+ NIVEL 8
+ DOS PREGUNTAS
 ===================================================== */
 
 function level8(){
@@ -1898,75 +2088,94 @@ function level8(){
  "❓ RONDA DE PREGUNTAS";
 
  $("mission").textContent=
- "Yonatan debe superar dos preguntas.";
+ "Supera las dos preguntas.";
 
- let questions=[
+ const questions=[
 
  {
-  q:"¿Qué ayuda a desarrollar mejores relaciones?",
+  q:"¿Qué ayuda a desarrollar relaciones dentro de una organización?",
   a:[
-   "🚫 No participar",
-   "🤝 Participar y valorar las ideas",
-   "😶 Trabajar siempre solo"
+   "🤝 Participación y escucha",
+   "🚫 Trabajar aislado",
+   "😶 Evitar opiniones"
   ],
-  correct:1
+  c:0
  },
 
  {
-  q:"¿Qué puede generar la participación del equipo?",
+  q:"¿Qué puede surgir cuando se valoran las ideas?",
   a:[
-   "💡 Nuevas soluciones e innovación",
-   "🚫 Más problemas",
-   "🙈 Menos comunicación"
+   "💡 Soluciones e innovación",
+   "🚫 Menos participación",
+   "🙈 Desinterés"
   ],
-  correct:0
+  c:0
+ },
+
+ {
+  q:"¿Qué mejora cuando existe participación?",
+  a:[
+   "🏢 La organización interna",
+   "🚫 El aislamiento",
+   "😴 La falta de comunicación"
+  ],
+  c:0
  }
 
  ];
 
+ shuffle(questions);
 
  let current=0;
 
 
  function showQuestion(){
 
-  let q=questions[current];
+  let q=
+  questions[current];
 
   $("gameArea").innerHTML=`
 
   <div class="card center">
 
   <div style="font-size:55px">
-  👨🏻‍💼❓
+  ❓🧠
   </div>
 
   <div class="question">
   ${q.q}
   </div>
 
-  <div id="qOptions"></div>
+  <div id="q8Options"></div>
 
   </div>
-
   `;
 
 
-  q.a.forEach((text,index)=>{
+  let answers=
+  q.a.map((text,index)=>({
+   text,
+   correct:index===q.c
+  }));
+
+  shuffle(answers);
+
+
+  answers.forEach(item=>{
 
    let button=
-    document.createElement("button");
+   document.createElement("button");
 
    button.className="option";
 
-   button.textContent=text;
+   button.textContent=
+   item.text;
 
-
-   button.onclick=function(){
+   button.onclick=()=>{
 
     if(!running)return;
 
-
-    if(index===q.correct){
+    if(item.correct){
 
      score+=40;
      combo++;
@@ -1975,18 +2184,23 @@ function level8(){
 
      current++;
 
-     message("🎉 ¡Correcto!");
-
-
-     if(current===questions.length){
+     if(current>=2){
 
       running=false;
 
       score+=70;
 
+      message(
+       "🎉 ¡Superaste la ronda!"
+      );
+
       wait(nextLevel,900);
 
      }else{
+
+      message(
+       "🎉 ¡Correcto! Siguiente..."
+      );
 
       wait(
        showQuestion,
@@ -2007,8 +2221,8 @@ function level8(){
 
    };
 
-
-   $("qOptions").appendChild(button);
+   $("q8Options")
+   .appendChild(button);
 
   });
 
@@ -2022,7 +2236,8 @@ function level8(){
 
 
 /* =====================================================
-NIVEL 9
+ NIVEL 9
+ FINAL
 ===================================================== */
 
 function level9(){
@@ -2031,7 +2246,46 @@ function level9(){
  "🏆 GRAN FINAL";
 
  $("mission").textContent=
- "Andrea tiene la última decisión.";
+ "Toma la última decisión para abrir la puerta.";
+
+ const questions=[
+
+ {
+  q:"¿Qué fortalece las relaciones entre los miembros?",
+  a:[
+   "🤐 Trabajar sin escuchar",
+   "🤝 Participar, escuchar y valorar las ideas",
+   "🚫 Evitar el trabajo en equipo"
+  ],
+  c:1
+ },
+
+ {
+  q:"¿Cuál ayuda a generar nuevas soluciones?",
+  a:[
+   "💡 Compartir ideas",
+   "🙈 Ignorar propuestas",
+   "🚪 Trabajar aislado"
+  ],
+  c:0
+ }
+
+ ];
+
+ const q=
+ questions[
+  Math.floor(Math.random()*questions.length)
+ ];
+
+
+ let answers=
+ q.a.map((text,index)=>({
+  text,
+  correct:index===q.c
+ }));
+
+ shuffle(answers);
+
 
  $("gameArea").innerHTML=`
 
@@ -2046,68 +2300,67 @@ function level9(){
  </h2>
 
  <div class="question">
-
- ¿Qué fortalece las relaciones
- entre los miembros de una organización?
-
+ ${q.q}
  </div>
 
- <button class="option"
- onclick="finalAnswer(false)">
- 🤐 Trabajar sin escuchar
- </button>
-
- <button class="option"
- onclick="finalAnswer(true)">
- 🤝 Participar, escuchar y valorar las ideas
- </button>
-
- <button class="option"
- onclick="finalAnswer(false)">
- 🚫 Evitar trabajar en equipo
- </button>
+ <div id="finalOptions"></div>
 
  </div>
-
  `;
+
+
+ answers.forEach(item=>{
+
+  let button=
+  document.createElement("button");
+
+  button.className="option";
+
+  button.textContent=
+  item.text;
+
+  button.onclick=()=>{
+
+   if(!running)return;
+
+   if(item.correct){
+
+    running=false;
+
+    score+=150;
+
+    soundDoor();
+
+    message(
+     "🎉 ¡PUERTA ABIERTA!"
+    );
+
+    wait(win,1200);
+
+   }else{
+
+    loseLife();
+
+    message(
+     "❌ ¡Piensa en todo lo aprendido!"
+    );
+
+   }
+
+  };
+
+  $("finalOptions")
+  .appendChild(button);
+
+ });
+
 
  startTimer(30);
 }
 
 
-function finalAnswer(correct){
-
- if(!running)return;
-
- if(correct){
-
-  running=false;
-
-  score+=150;
-
-  soundDoor();
-
-  message(
-   "🎉 ¡PUERTA ABIERTA!"
-  );
-
-  wait(win,1200);
-
- }else{
-
-  loseLife();
-
-  message(
-   "❌ ¡Piensa en todo lo aprendido!"
-  );
-
- }
-
-}
-
-
 /* =====================================================
-GANAR
+ GANAR
 ===================================================== */
 
 function win(){
@@ -2117,22 +2370,26 @@ function win(){
  soundWin();
 
  $("gameScreen")
-  .classList.remove("active");
+ .classList.remove("active");
 
  $("finalScreen")
-  .classList.add("active");
+ .classList.add("active");
 
 
- let rank="🥉 SOBREVIVIENTE";
+ let rank=
+ "🥉 SOBREVIVIENTE";
 
  if(score>=300)
-  rank="🥈 EXPERTO DE OFICINA";
+ rank=
+ "🥈 EXPERTO DE OFICINA";
 
  if(score>=500)
-  rank="🥇 MAESTRO DEL EQUIPO";
+ rank=
+ "🥇 MAESTRO DEL EQUIPO";
 
  if(score>=700)
-  rank="👑 LEYENDA DE LA OFICINA";
+ rank=
+ "👑 LEYENDA DE LA OFICINA";
 
 
  $("finalContent").innerHTML=`
@@ -2169,7 +2426,7 @@ function win(){
 
  <button
  class="bigButton"
- onclick="location.reload()">
+ onclick="restartGame()">
 
  🔄 JUGAR DE NUEVO
 
@@ -2180,7 +2437,7 @@ function win(){
 
 
 /* =====================================================
-PERDER
+ PERDER
 ===================================================== */
 
 function lose(){
@@ -2190,10 +2447,10 @@ function lose(){
  soundWrong();
 
  $("gameScreen")
-  .classList.remove("active");
+ .classList.remove("active");
 
  $("finalScreen")
-  .classList.add("active");
+ .classList.add("active");
 
 
  $("finalContent").innerHTML=`
@@ -2216,7 +2473,7 @@ function lose(){
 
  <button
  class="bigButton"
- onclick="location.reload()">
+ onclick="restartGame()">
 
  🔄 INTENTAR DE NUEVO
 
@@ -2224,6 +2481,91 @@ function lose(){
 
  `;
 }
+
+
+/* =====================================================
+ REINICIAR SIN RECARGAR
+===================================================== */
+
+function restartGame(){
+
+ clearAll();
+
+ /*
+ Reiniciar absolutamente todo.
+ */
+
+ level=1;
+ lives=3;
+ score=0;
+ combo=0;
+ time=0;
+
+ memoryCorrect=[];
+ memorySelected=[];
+
+ gameSeed=
+ Date.now()+
+ Math.floor(Math.random()*999999);
+
+
+ $("finalScreen")
+ .classList.remove("active");
+
+ $("gameScreen")
+ .classList.remove("active");
+
+ $("startScreen")
+ .classList.add("active");
+
+
+ $("gameArea").innerHTML="";
+
+ $("message").textContent=
+ "¡Prepárate!";
+
+
+ $("progressBar")
+ .style.width="0%";
+
+
+ $("score").textContent="0";
+ $("combo").textContent="0";
+ $("time").textContent="--";
+ $("levelNumber").textContent="1";
+ $("lives").textContent=
+ "❤️❤️❤️";
+
+
+ $("activeCharacter").textContent="";
+
+
+ for(let i=0;i<6;i++){
+
+  $("char"+i)
+  .classList.remove("active");
+
+ }
+
+
+ /*
+ Al volver a comenzar se genera
+ una partida completamente nueva.
+ */
+
+ window.scrollTo({
+  top:0,
+  behavior:"smooth"
+ });
+
+}
+
+
+/* =====================================================
+ INICIO
+===================================================== */
+
+update();
 
 </script>
 
