@@ -2,1037 +2,2227 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Escape de la Oficina 🔐🏢</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🏢 Caos en la Oficina</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+*{box-sizing:border-box}
 
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    min-height:100vh;
-    background:
-        radial-gradient(circle at top,#dcecff 0%,transparent 35%),
-        linear-gradient(135deg,#eef5ff,#f5f7fb);
-    color:#24324a;
-    overflow-x:hidden;
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:linear-gradient(135deg,#dce8ff,#ffe5f1);
+ color:#202b45;
+ min-height:100vh;
 }
 
-/* ---------------- GENERAL ---------------- */
-
-.screen{
-    display:none;
-    min-height:100vh;
-    padding:20px;
-    align-items:center;
-    justify-content:center;
+#app{
+ max-width:900px;
+ margin:auto;
+ padding:15px;
 }
 
-.screen.active{
-    display:flex;
-}
+.screen{display:none}
+.screen.active{display:block}
 
 .card{
-    width:min(900px,100%);
-    background:rgba(255,255,255,.95);
-    border-radius:28px;
-    padding:30px;
-    box-shadow:0 20px 50px rgba(36,50,74,.15);
+ background:white;
+ border-radius:25px;
+ padding:22px;
+ margin-top:15px;
+ box-shadow:0 12px 30px rgba(0,0,0,.15);
 }
 
-/* ---------------- INICIO ---------------- */
-
-.start-card{
-    text-align:center;
-}
-
-.office-icon{
-    font-size:80px;
-    animation:float 2.5s infinite ease-in-out;
-}
-
-@keyframes float{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-10px)}
-}
+.center{text-align:center}
 
 h1{
-    font-size:clamp(32px,7vw,60px);
-    margin:10px 0;
-    color:#263d66;
+ font-size:clamp(32px,8vw,55px);
+ margin:10px 0;
 }
 
-.subtitle{
-    font-size:18px;
-    color:#66758f;
-    margin-bottom:20px;
+button{
+ border:0;
+ border-radius:16px;
+ padding:14px 18px;
+ margin:7px;
+ background:#4056a1;
+ color:white;
+ font-weight:bold;
+ font-size:16px;
+ cursor:pointer;
 }
 
-.story{
-    background:#f2f6fc;
-    border-left:6px solid #ffc928;
-    padding:18px;
-    border-radius:15px;
-    line-height:1.6;
-    margin:20px 0;
-    text-align:left;
+button:active{transform:scale(.94)}
+
+.bigButton{
+ font-size:20px;
+ padding:17px 30px;
 }
 
-.start-button{
-    border:none;
-    padding:17px 35px;
-    border-radius:50px;
-    background:linear-gradient(135deg,#315b9d,#234574);
-    color:white;
-    font-size:20px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 8px 20px rgba(35,69,116,.25);
-    transition:.2s;
+.characters{
+ display:grid;
+ grid-template-columns:repeat(6,1fr);
+ gap:8px;
+ margin:20px 0;
 }
 
-.start-button:hover{
-    transform:translateY(-3px) scale(1.02);
+.character{
+ background:#f0f3ff;
+ border-radius:15px;
+ padding:8px 3px;
+ font-size:12px;
+ font-weight:bold;
+ text-align:center;
 }
 
-/* ---------------- EQUIPO ---------------- */
-
-.team{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    flex-wrap:wrap;
-    margin:22px 0;
+.character span{
+ display:block;
+ font-size:30px;
+ margin-bottom:4px;
 }
 
-.person{
-    background:#f4f7fb;
-    border-radius:18px;
-    padding:10px 12px;
-    min-width:90px;
-    box-shadow:0 5px 12px rgba(0,0,0,.07);
+.character.active{
+ background:#dce5ff;
+ transform:translateY(-4px);
+ box-shadow:0 5px 12px rgba(64,86,161,.3);
 }
 
-.person .emoji{
-    font-size:28px;
+.stats{
+ display:flex;
+ justify-content:center;
+ flex-wrap:wrap;
+ gap:8px;
 }
 
-.person span{
-    display:block;
-    font-size:12px;
-    font-weight:bold;
-    margin-top:4px;
-}
-
-/* ---------------- JUEGO ---------------- */
-
-.game-card{
-    max-width:950px;
-}
-
-.top-info{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:15px;
-}
-
-.badge{
-    padding:9px 14px;
-    border-radius:30px;
-    background:#eef3fa;
-    font-weight:bold;
-    font-size:14px;
-}
-
-.lives{
-    color:#d9364f;
-}
-
-.timer{
-    color:#315b9d;
-}
-
-.progress-container{
-    width:100%;
-    height:13px;
-    background:#e6ebf2;
-    border-radius:20px;
-    overflow:hidden;
-    margin:12px 0 25px;
+.stat{
+ background:#edf1ff;
+ border-radius:13px;
+ padding:9px 13px;
+ font-weight:bold;
 }
 
 .progress{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,#315b9d,#ffc928);
-    transition:.4s;
+ height:9px;
+ background:#e3e7f2;
+ border-radius:20px;
+ overflow:hidden;
+ margin:12px 0;
 }
 
-/* ---------------- RETO ---------------- */
-
-.challenge{
-    text-align:center;
+.progressBar{
+ height:100%;
+ width:0%;
+ background:#4056a1;
+ transition:.4s;
 }
 
-.challenge-icon{
-    font-size:65px;
-    margin-bottom:10px;
+.mission{
+ background:#fff1bb;
+ border-left:6px solid #e0ad00;
+ border-radius:15px;
+ padding:15px;
+ margin:15px 0;
 }
 
-.challenge h2{
-    font-size:clamp(23px,5vw,35px);
-    margin-bottom:12px;
-    color:#263d66;
-}
-
-.challenge p{
-    color:#63728b;
-    font-size:17px;
-    line-height:1.5;
-    margin-bottom:22px;
-}
-
-.options{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:14px;
+.question{
+ font-size:21px;
+ font-weight:bold;
+ background:#f5f7ff;
+ padding:20px;
+ border-radius:18px;
+ margin:15px 0;
 }
 
 .option{
-    border:2px solid #e1e7ef;
-    background:#fff;
-    border-radius:18px;
-    padding:18px;
-    font-size:16px;
-    font-weight:bold;
-    color:#33435d;
-    cursor:pointer;
-    transition:.2s;
+ display:block;
+ width:90%;
+ max-width:600px;
+ margin:10px auto;
 }
 
-.option:hover{
-    border-color:#315b9d;
-    transform:translateY(-2px);
-    background:#f7faff;
+.message{
+ min-height:50px;
+ background:#202b45;
+ color:white;
+ border-radius:15px;
+ padding:14px;
+ margin-top:15px;
+ text-align:center;
+ font-weight:bold;
 }
 
-.option.correct{
-    background:#dff7e7;
-    border-color:#31a85b;
-    color:#18743a;
+/* MEMORIA */
+
+.memoryScene{
+ position:relative;
+ height:360px;
+ max-width:650px;
+ margin:20px auto;
+ background:linear-gradient(135deg,#eef4ff,#fff3f8);
+ border-radius:25px;
+ border:3px dashed #c8d2ec;
+ overflow:hidden;
 }
 
-.option.wrong{
-    background:#ffe1e5;
-    border-color:#d9364f;
-    color:#a51f35;
-    animation:shake .35s;
+.memoryObject{
+ position:absolute;
+ font-size:45px;
+ animation:floatObject 1.5s ease-in-out infinite alternate;
 }
 
-@keyframes shake{
-    0%,100%{transform:translateX(0)}
-    25%{transform:translateX(-7px)}
-    75%{transform:translateX(7px)}
+@keyframes floatObject{
+ from{transform:translateY(0) rotate(-4deg)}
+ to{transform:translateY(-7px) rotate(4deg)}
 }
 
-.feedback{
-    min-height:45px;
-    margin-top:18px;
-    font-weight:bold;
-    font-size:18px;
+.memoryOptions{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:12px;
+ max-width:600px;
+ margin:20px auto;
 }
 
-/* ---------------- RESULTADO ---------------- */
-
-.result-card{
-    text-align:center;
+.memoryChoice{
+ margin:0;
+ min-height:75px;
+ font-size:34px;
+ background:#eef2ff;
+ color:#202b45;
+ border:3px solid transparent;
 }
 
-.result-icon{
-    font-size:90px;
-    animation:float 2s infinite ease-in-out;
+.memoryChoice.selected{
+ background:#d9e2ff;
+ border-color:#4056a1;
+ transform:scale(.96);
 }
 
-.result-card h2{
-    font-size:42px;
-    color:#263d66;
-    margin:10px 0;
+.memoryChoice.correct{
+ background:#bdeecb;
+ border-color:#32964e;
 }
 
-.score{
-    font-size:30px;
-    font-weight:bold;
-    color:#315b9d;
-    margin:20px;
+.memoryChoice.wrong{
+ background:#ffd0d0;
+ border-color:#d95353;
 }
 
-.final-message{
-    background:#f2f6fc;
-    padding:20px;
-    border-radius:18px;
-    line-height:1.6;
-    margin-bottom:20px;
+/* ATRAPAR */
+
+.playArea{
+ position:relative;
+ height:350px;
+ background:linear-gradient(135deg,#eef4ff,#fff0f7);
+ border-radius:20px;
+ overflow:hidden;
+ border:3px solid #d7def1;
 }
 
-/* ---------------- CONFETI ---------------- */
-
-.confetti{
-    position:fixed;
-    width:10px;
-    height:18px;
-    top:-30px;
-    z-index:999;
-    animation:fall linear forwards;
+.falling{
+ position:absolute;
+ font-size:42px;
+ cursor:pointer;
 }
 
-@keyframes fall{
-    to{
-        transform:translateY(110vh) rotate(720deg);
-    }
+/* SECUENCIA */
+
+.sequenceDisplay{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ flex-wrap:wrap;
+ margin:25px 5px;
 }
 
-/* ---------------- RESPONSIVE ---------------- */
+.sequenceEmoji{
+ width:58px;
+ height:58px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:#edf1ff;
+ border-radius:15px;
+ font-size:30px;
+}
+
+.sequenceOptions{
+ display:flex;
+ flex-direction:column;
+ gap:10px;
+ max-width:650px;
+ margin:auto;
+}
+
+.sequenceOption{margin:0}
+
+/* REACCION */
+
+.reactionButton{
+ width:170px;
+ height:170px;
+ border-radius:50%;
+ font-size:30px;
+ margin:40px auto;
+ display:block;
+ background:#ff6584;
+}
+
+/* FINAL */
+
+.finalIcon{font-size:80px}
+
+.rank{
+ font-size:25px;
+ font-weight:bold;
+ margin:15px;
+}
+
+.hidden{display:none!important}
 
 @media(max-width:650px){
 
-    .screen{
-        padding:12px;
-    }
+ .characters{
+  grid-template-columns:repeat(3,1fr);
+ }
 
-    .card{
-        padding:20px 15px;
-        border-radius:22px;
-    }
+ .memoryScene{
+  height:330px;
+ }
 
-    .office-icon{
-        font-size:65px;
-    }
+ .memoryOptions{
+  grid-template-columns:repeat(2,1fr);
+ }
 
-    .team{
-        display:grid;
-        grid-template-columns:repeat(3,1fr);
-        gap:7px;
-    }
-
-    .person{
-        min-width:0;
-        padding:8px 4px;
-    }
-
-    .person .emoji{
-        font-size:25px;
-    }
-
-    .person span{
-        font-size:10px;
-    }
-
-    .options{
-        grid-template-columns:1fr;
-    }
-
-    .option{
-        padding:16px;
-    }
-
-    .top-info{
-        justify-content:center;
-    }
+ .playArea{
+  height:320px;
+ }
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- ================= INICIO ================= -->
+<div id="app">
 
-<section id="startScreen" class="screen active">
+<!-- INICIO -->
 
-<div class="card start-card">
+<div id="startScreen" class="screen active">
 
-<div class="office-icon">🏢🔐</div>
+<div class="card center">
 
-<h1>Escape de la Oficina</h1>
+<div style="font-size:70px">🏢🎮</div>
 
-<div class="subtitle">
-🎮 Una misión de trabajo en equipo
+<h1>CAOS EN LA OFICINA</h1>
+
+<p>🚨 La oficina está en caos.</p>
+
+<p>
+Completa <b>9 retos diferentes</b>
+y consigue escapar.
+</p>
+
+<div class="characters">
+
+<div class="character">
+<span>👩🏻‍💼</span>Andrea
 </div>
 
-<div class="story">
-
-<strong>🚨 ¡ALERTA!</strong><br><br>
-
-La oficina ha quedado bloqueada y solo hay una forma
-de salir: superar todos los retos relacionados con
-las relaciones entre los miembros de la organización.
-
-Deberán demostrar que saben trabajar en equipo,
-compartir información, participar, aportar ideas y
-resolver situaciones de manera adecuada.
-
-<strong>⏱️ Tienen 5 minutos.</strong>
-
-<br><br>
-
-¿Podrán desbloquear la puerta? 🔓
-
+<div class="character">
+<span>👨🏽‍💼</span>Janier
 </div>
 
-<div class="team">
-
-<div class="person">
-<div class="emoji">👩🏻‍💼</div>
-<span>Andrea</span>
+<div class="character">
+<span>👩🏼‍💼</span>Jessica
 </div>
 
-<div class="person">
-<div class="emoji">👨🏽‍💼</div>
-<span>Janier</span>
+<div class="character">
+<span>👩🏽‍💼</span>MyFa
 </div>
 
-<div class="person">
-<div class="emoji">👩🏻‍💼</div>
-<span>Jessica</span>
+<div class="character">
+<span>👨🏻‍💼</span>Yonatan
 </div>
 
-<div class="person">
-<div class="emoji">👩🏻‍💻</div>
-<span>MyFa</span>
-</div>
-
-<div class="person">
-<div class="emoji">👨🏻‍💼</div>
-<span>Yonatan</span>
-</div>
-
-<div class="person">
-<div class="emoji">👩🏻‍💻</div>
-<span>Laura</span>
+<div class="character">
+<span>👩🏻‍💼</span>Laura
 </div>
 
 </div>
 
-<button class="start-button" onclick="startGame()">
-🎮 COMENZAR MISIÓN
+<p>
+⚡ Decisiones · 🧠 Memoria · ❓ Preguntas · 🎮 Juegos
+</p>
+
+<button class="bigButton" onclick="startGame()">
+🚨 COMENZAR
 </button>
 
 </div>
-
-</section>
-
-
-<!-- ================= JUEGO ================= -->
-
-<section id="gameScreen" class="screen">
-
-<div class="card game-card">
-
-<div class="top-info">
-
-<div class="badge">
-🧩 <span id="challengeNumber">Reto 1 de 10</span>
 </div>
 
-<div class="badge lives" id="lives">
-❤️❤️❤️
+
+<!-- JUEGO -->
+
+<div id="gameScreen" class="screen">
+
+<div class="card">
+
+<div class="stats">
+
+<div class="stat">
+❤️ <span id="lives">❤️❤️❤️</span>
 </div>
 
-<div class="badge timer">
-⏱️ <span id="timer">05:00</span>
+<div class="stat">
+🏆 <span id="score">0</span>
 </div>
 
+<div class="stat">
+🔥 <span id="combo">0</span>
 </div>
 
-<div class="progress-container">
-<div class="progress" id="progress"></div>
+<div class="stat">
+⏱️ <span id="time">--</span>
 </div>
-
-<div id="challengeContainer" class="challenge"></div>
-
-<div id="feedback" class="feedback"></div>
 
 </div>
 
-</section>
-
-
-<!-- ================= FINAL ================= -->
-
-<section id="resultScreen" class="screen">
-
-<div class="card result-card">
-
-<div id="resultIcon" class="result-icon">
-🏆
+<div class="progress">
+<div id="progressBar" class="progressBar"></div>
 </div>
 
-<h2 id="resultTitle">
-¡MISIÓN COMPLETADA!
-</h2>
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
 
-<div class="score">
-⭐ <span id="finalScore">0</span> / 10
-</div>
+<h2 id="levelTitle"></h2>
 
-<div id="finalMessage" class="final-message"></div>
-
-<button class="start-button" onclick="restartGame()">
-🔄 JUGAR DE NUEVO
-</button>
+<strong>
+<span id="levelNumber">1</span>/9
+</strong>
 
 </div>
 
-</section>
+
+<div class="characters">
+
+<div id="char0" class="character">
+<span>👩🏻‍💼</span>Andrea
+</div>
+
+<div id="char1" class="character">
+<span>👨🏽‍💼</span>Janier
+</div>
+
+<div id="char2" class="character">
+<span>👩🏼‍💼</span>Jessica
+</div>
+
+<div id="char3" class="character">
+<span>👩🏽‍💼</span>MyFa
+</div>
+
+<div id="char4" class="character">
+<span>👨🏻‍💼</span>Yonatan
+</div>
+
+<div id="char5" class="character">
+<span>👩🏻‍💼</span>Laura
+</div>
+
+</div>
+
+
+<div class="mission">
+
+🎯 <b>MISIÓN</b>
+
+<p id="mission"></p>
+
+<b>
+👤 Encargado:
+<span id="activeCharacter"></span>
+</b>
+
+</div>
+
+<div id="gameArea"></div>
+
+<div id="message" class="message">
+¡Prepárate!
+</div>
+
+</div>
+</div>
+
+
+<!-- FINAL -->
+
+<div id="finalScreen" class="screen">
+
+<div class="card center" id="finalContent"></div>
+
+</div>
+
+</div>
 
 
 <script>
 
 /* =====================================================
-   DATOS DEL JUEGO
+SONIDOS
+Se generan con Web Audio, por lo que NO necesitas
+subir archivos MP3.
 ===================================================== */
 
-const challenges = [
+let audioCtx=null;
 
-{
-icon:"🤝",
-question:"Un compañero propone una idea para mejorar un proceso. ¿Qué fortalece más la relación dentro del equipo?",
-options:[
-"Escucharla y valorar su aporte",
-"Ignorarla porque no es nuestra idea",
-"Decidir sin consultar",
-"Decirle que no opine"
-],
-correct:0
-},
+function initAudio(){
 
-{
-icon:"💬",
-question:"El equipo necesita información para terminar un proyecto. ¿Cuál es la mejor acción?",
-options:[
-"Guardar la información",
-"Compartirla oportunamente con el equipo",
-"Enviar información incompleta",
-"Esperar a que alguien la descubra"
-],
-correct:1
-},
+ if(!audioCtx){
 
-{
-icon:"👥",
-question:"Dos compañeros tienen opiniones diferentes sobre una tarea. ¿Qué deberían hacer?",
-options:[
-"Dejar de hablarse",
-"Imponer una opinión",
-"Escuchar ambos puntos de vista y buscar un acuerdo",
-"Ignorar el problema"
-],
-correct:2
-},
+  const AudioContext=
+   window.AudioContext ||
+   window.webkitAudioContext;
 
-{
-icon:"💡",
-question:"¿Qué puede surgir cuando los miembros participan y aportan diferentes ideas?",
-options:[
-"Menos comunicación",
-"Nuevas soluciones e innovación",
-"Más aislamiento",
-"Menos colaboración"
-],
-correct:1
-},
+  if(AudioContext){
+   audioCtx=new AudioContext();
+  }
+ }
 
-{
-icon:"📢",
-question:"Una persona del equipo tiene información importante que los demás necesitan. ¿Qué demuestra compartirla?",
-options:[
-"Falta de confianza",
-"Trabajo individual",
-"Colaboración y coordinación",
-"Competencia negativa"
-],
-correct:2
-},
+ if(audioCtx &&
+    audioCtx.state==="suspended"){
 
-{
-icon:"🧩",
-question:"Para fortalecer las relaciones entre los miembros de una organización es fundamental:",
-options:[
-"Evitar la participación",
-"Trabajar siempre individualmente",
-"Fomentar la colaboración y el respeto",
-"Ocultar las opiniones"
-],
-correct:2
-},
+   audioCtx.resume();
 
-{
-icon:"🏢",
-question:"Un equipo tiene buena relación entre sus integrantes. ¿Qué efecto puede generar en la organización?",
-options:[
-"Mejor organización interna",
-"Más conflictos",
-"Menos participación",
-"Menos intercambio de información"
-],
-correct:0
-},
-
-{
-icon:"🙋",
-question:"Durante una reunión, una compañera propone una solución diferente. ¿Cuál es la mejor respuesta?",
-options:[
-"Interrumpirla",
-"Escucharla y analizar su propuesta",
-"Rechazarla inmediatamente",
-"Evitar que participe"
-],
-correct:1
-},
-
-{
-icon:"🌟",
-question:"¿Cuál de estas acciones ayuda directamente a desarrollar las relaciones entre los miembros?",
-options:[
-"Competir constantemente",
-"Valorar las ideas de los demás",
-"Evitar reuniones",
-"No compartir información"
-],
-correct:1
-},
-
-{
-icon:"🔐",
-question:"¡Último reto! Para desbloquear la oficina, el equipo debe demostrar principalmente:",
-options:[
-"Individualismo",
-"Silencio",
-"Participación, colaboración y respeto",
-"Competencia entre compañeros"
-],
-correct:2
+ }
 }
 
+
+function tone(
+ frequency,
+ duration=.15,
+ type="sine",
+ volume=.08,
+ delay=0
+){
+
+ if(!audioCtx)return;
+
+ const oscillator=
+   audioCtx.createOscillator();
+
+ const gain=
+   audioCtx.createGain();
+
+ oscillator.type=type;
+
+ oscillator.frequency.value=
+   frequency;
+
+ gain.gain.setValueAtTime(
+   0,
+   audioCtx.currentTime+delay
+ );
+
+ gain.gain.linearRampToValueAtTime(
+   volume,
+   audioCtx.currentTime+delay+.01
+ );
+
+ gain.gain.exponentialRampToValueAtTime(
+   .001,
+   audioCtx.currentTime+
+   delay+
+   duration
+ );
+
+ oscillator.connect(gain);
+ gain.connect(audioCtx.destination);
+
+ oscillator.start(
+   audioCtx.currentTime+delay
+ );
+
+ oscillator.stop(
+   audioCtx.currentTime+
+   delay+
+   duration+
+   .03
+ );
+}
+
+
+/* SONIDO CORRECTO */
+
+function soundCorrect(){
+
+ initAudio();
+
+ tone(523,.12,"sine",.09);
+ tone(659,.12,"sine",.09,.12);
+ tone(784,.22,"sine",.1,.24);
+
+}
+
+
+/* SONIDO ERROR */
+
+function soundWrong(){
+
+ initAudio();
+
+ tone(220,.18,"sawtooth",.06);
+ tone(165,.28,"sawtooth",.06,.16);
+
+}
+
+
+/* SONIDO NIVEL SUPERADO */
+
+function soundLevel(){
+
+ initAudio();
+
+ tone(523,.12,"sine",.08);
+ tone(659,.12,"sine",.08,.12);
+ tone(784,.12,"sine",.08,.24);
+ tone(1046,.35,"sine",.11,.36);
+
+}
+
+
+/* SONIDO TIEMPO */
+
+function soundTime(){
+
+ initAudio();
+
+ tone(700,.12,"square",.07);
+ tone(500,.12,"square",.07,.15);
+ tone(300,.35,"square",.08,.3);
+
+}
+
+
+/* SONIDO PUERTA */
+
+function soundDoor(){
+
+ initAudio();
+
+ tone(180,.15,"sawtooth",.05);
+ tone(250,.18,"sawtooth",.06,.16);
+ tone(500,.25,"sine",.09,.35);
+ tone(800,.4,"sine",.11,.6);
+
+}
+
+
+/* SONIDO FINAL */
+
+function soundWin(){
+
+ initAudio();
+
+ tone(523,.15,"sine",.09);
+ tone(659,.15,"sine",.09,.15);
+ tone(784,.15,"sine",.09,.30);
+ tone(1046,.2,"sine",.1,.45);
+ tone(1318,.5,"sine",.12,.65);
+
+}
+
+
+/* SONIDO MEMORIA */
+
+function soundMemory(){
+
+ initAudio();
+
+ tone(440,.12,"sine",.06);
+ tone(660,.12,"sine",.06,.13);
+
+}
+
+
+/* =====================================================
+VARIABLES
+===================================================== */
+
+let level=1;
+let lives=3;
+let score=0;
+let combo=0;
+let time=0;
+let timer=null;
+let running=false;
+let timers=[];
+
+const names=[
+"Andrea",
+"Janier",
+"Jessica",
+"MyFa",
+"Yonatan",
+"Laura"
+];
+
+const emojis=[
+"👩🏻‍💼",
+"👨🏽‍💼",
+"👩🏼‍💼",
+"👩🏽‍💼",
+"👨🏻‍💼",
+"👩🏻‍💼"
 ];
 
 
-/* =====================================================
-   VARIABLES
-===================================================== */
-
-let currentChallenge = 0;
-let lives = 3;
-let score = 0;
-let timeLeft = 300;
-let timerInterval = null;
-let locked = false;
+function $(id){
+ return document.getElementById(id);
+}
 
 
-/* =====================================================
-   SONIDOS
-===================================================== */
+function clearAll(){
 
-const audioContext = new (
-window.AudioContext ||
-window.webkitAudioContext
-)();
+ clearInterval(timer);
 
-function sound(type){
+ timers.forEach(t=>{
+  clearTimeout(t);
+  clearInterval(t);
+ });
 
-    try{
+ timers=[];
 
-        const oscillator =
-            audioContext.createOscillator();
+ running=false;
+}
 
-        const gain =
-            audioContext.createGain();
 
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
+function wait(fn,ms){
 
-        if(type === "correct"){
+ let t=setTimeout(fn,ms);
 
-            oscillator.frequency.setValueAtTime(
-                523,
-                audioContext.currentTime
-            );
+ timers.push(t);
+}
 
-            oscillator.frequency.exponentialRampToValueAtTime(
-                784,
-                audioContext.currentTime + .18
-            );
 
-        }else{
+function update(){
 
-            oscillator.frequency.setValueAtTime(
-                180,
-                audioContext.currentTime
-            );
+ $("score").textContent=score;
+ $("combo").textContent=combo;
+ $("levelNumber").textContent=level;
+ $("time").textContent=time;
 
-            oscillator.frequency.exponentialRampToValueAtTime(
-                90,
-                audioContext.currentTime + .2
-            );
-        }
+ let hearts="";
 
-        gain.gain.setValueAtTime(
-            .12,
-            audioContext.currentTime
-        );
+ for(let i=0;i<3;i++){
+  hearts+=i<lives?"❤️":"🖤";
+ }
 
-        gain.gain.exponentialRampToValueAtTime(
-            .001,
-            audioContext.currentTime + .25
-        );
+ $("lives").textContent=hearts;
 
-        oscillator.start();
+ $("progressBar").style.width=
+ ((level-1)/9)*100+"%";
+}
 
-        oscillator.stop(
-            audioContext.currentTime + .25
-        );
 
-    }catch(e){}
+function message(text){
+
+ $("message").textContent=text;
+
+ update();
+}
+
+
+function setCharacter(n){
+
+ for(let i=0;i<6;i++){
+
+  $("char"+i).classList.toggle(
+   "active",
+   i===n
+  );
+
+ }
+
+ $("activeCharacter").textContent=
+ emojis[n]+" "+names[n];
 }
 
 
 /* =====================================================
-   INICIAR
+TEMPORIZADOR
+===================================================== */
+
+function startTimer(seconds){
+
+ clearInterval(timer);
+
+ time=seconds;
+
+ update();
+
+ timer=setInterval(()=>{
+
+  if(!running)return;
+
+  time--;
+
+  update();
+
+  if(time<=0){
+
+   clearInterval(timer);
+
+   running=false;
+
+   lives--;
+
+   combo=0;
+
+   soundTime();
+
+   update();
+
+   if(lives<=0){
+
+    lose();
+
+   }else{
+
+    message("⏰ ¡Se acabó el tiempo!");
+
+    wait(()=>{
+     loadLevel();
+    },900);
+
+   }
+
+  }
+
+ },1000);
+}
+
+
+/* =====================================================
+VIDAS
+===================================================== */
+
+function loseLife(){
+
+ if(!running)return;
+
+ lives--;
+
+ combo=0;
+
+ soundWrong();
+
+ update();
+
+ if(lives<=0){
+
+  lose();
+
+ }
+
+}
+
+
+/* =====================================================
+SIGUIENTE NIVEL
+===================================================== */
+
+function nextLevel(){
+
+ clearAll();
+
+ soundLevel();
+
+ if(level<9){
+
+  level++;
+
+  wait(loadLevel,700);
+
+ }else{
+
+  win();
+
+ }
+
+}
+
+
+/* =====================================================
+COMENZAR
 ===================================================== */
 
 function startGame(){
 
-    document.getElementById("startScreen")
-        .classList.remove("active");
+ initAudio();
 
-    document.getElementById("gameScreen")
-        .classList.add("active");
+ soundLevel();
 
-    currentChallenge = 0;
-    lives = 3;
-    score = 0;
-    timeLeft = 300;
-    locked = false;
+ $("startScreen")
+  .classList.remove("active");
 
-    updateLives();
+ $("gameScreen")
+  .classList.add("active");
 
-    showChallenge();
+ level=1;
+ lives=3;
+ score=0;
+ combo=0;
 
-    clearInterval(timerInterval);
+ loadLevel();
+}
 
-    timerInterval = setInterval(updateTimer,1000);
+
+/* =====================================================
+CARGAR NIVEL
+===================================================== */
+
+function loadLevel(){
+
+ clearAll();
+
+ $("gameArea").innerHTML="";
+
+ running=true;
+
+ setCharacter((level-1)%6);
+
+ update();
+
+ if(level===1)level1();
+ if(level===2)level2();
+ if(level===3)level3();
+ if(level===4)level4();
+ if(level===5)level5();
+ if(level===6)level6();
+ if(level===7)level7();
+ if(level===8)level8();
+ if(level===9)level9();
+}
+
+
+/* =====================================================
+NIVEL 1
+===================================================== */
+
+function level1(){
+
+ $("levelTitle").textContent=
+ "⚡ DECISIÓN RÁPIDA";
+
+ $("mission").textContent=
+ "Andrea encuentra un problema antes de una reunión.";
+
+ $("gameArea").innerHTML=`
+
+ <div class="card center">
+
+ <div style="font-size:60px">
+ 👩🏻‍💼📋
+ </div>
+
+ <div class="question">
+
+ La reunión comienza en 5 minutos
+ y faltan documentos.
+
+ ¿Qué debería hacer Andrea?
+
+ </div>
+
+ <button class="option"
+ onclick="answer1(false)">
+ 😶 Esperar
+ </button>
+
+ <button class="option"
+ onclick="answer1(true)">
+ 🤝 Organizar al equipo y repartir tareas
+ </button>
+
+ <button class="option"
+ onclick="answer1(false)">
+ 🚪 Cancelar
+ </button>
+
+ </div>
+
+ `;
+
+ startTimer(25);
+}
+
+
+function answer1(correct){
+
+ if(!running)return;
+
+ if(correct){
+
+  score+=50;
+  combo++;
+
+  soundCorrect();
+
+  message("🎉 ¡Excelente decisión!");
+
+  running=false;
+
+  wait(nextLevel,900);
+
+ }else{
+
+  loseLife();
+
+  message(
+   "❌ Esa decisión no resuelve el problema."
+  );
+
+ }
 
 }
 
 
 /* =====================================================
-   TEMPORIZADOR
+NIVEL 2
+MEMORIA DESORDENADA
 ===================================================== */
 
-function updateTimer(){
+function level2(){
 
-    timeLeft--;
+ $("levelTitle").textContent=
+ "🧠 MEMORIA";
 
-    let minutes =
-        Math.floor(timeLeft / 60);
+ $("mission").textContent=
+ "Janier debe recordar qué objetos estaban en la oficina.";
 
-    let seconds =
-        timeLeft % 60;
+ $("gameArea").innerHTML=`
 
-    document.getElementById("timer").textContent =
-        String(minutes).padStart(2,"0")
-        + ":"
-        + String(seconds).padStart(2,"0");
+ <div class="card center">
 
-    if(timeLeft <= 0){
+ <h3 id="memoryTitle">
+ 👀 ¡MEMORIZA!
+ </h3>
 
-        clearInterval(timerInterval);
+ <p id="memoryInstruction">
+ Mira los objetos. Tienes unos segundos.
+ </p>
 
-        finishGame(false);
+ <div
+ id="memoryScene"
+ class="memoryScene">
+ </div>
+
+ <div
+ id="memoryChoices"
+ class="memoryOptions hidden">
+ </div>
+
+ <button
+ id="memoryConfirm"
+ class="bigButton hidden"
+ onclick="checkMemory()">
+
+ ✅ CONFIRMAR
+
+ </button>
+
+ </div>
+
+ `;
+
+
+ const correctObjects=[
+  "📁",
+  "☕",
+  "🔑",
+  "💻"
+ ];
+
+
+ const extraObjects=[
+  "📱",
+  "🖨️",
+  "✏️",
+  "📌"
+ ];
+
+
+ const allObjects=[
+  ...correctObjects,
+  ...extraObjects
+ ];
+
+
+ const scene=$("memoryScene");
+
+
+ const positions=[
+  {left:12,top:18},
+  {left:65,top:10},
+  {left:37,top:42},
+  {left:78,top:55}
+ ];
+
+
+ let visibleObjects=[
+  ...correctObjects
+ ];
+
+
+ for(let i=visibleObjects.length-1;i>0;i--){
+
+  let j=Math.floor(
+   Math.random()*(i+1)
+  );
+
+  [visibleObjects[i],visibleObjects[j]]=
+  [visibleObjects[j],visibleObjects[i]];
+
+ }
+
+
+ visibleObjects.forEach((emoji,index)=>{
+
+  let object=
+  document.createElement("div");
+
+  object.className="memoryObject";
+
+  object.textContent=emoji;
+
+  object.style.left=
+   positions[index].left+"%";
+
+  object.style.top=
+   positions[index].top+"%";
+
+  scene.appendChild(object);
+
+ });
+
+
+ soundMemory();
+
+
+ wait(()=>{
+
+  scene.innerHTML="";
+
+  $("memoryTitle").textContent=
+   "🧠 ¿QUÉ VISTE?";
+
+  $("memoryInstruction").textContent=
+   "Selecciona los 4 objetos que aparecieron.";
+
+  showMemoryOptions(
+   allObjects,
+   correctObjects
+  );
+
+ },4000);
+
+
+ startTimer(30);
+}
+
+
+let memoryCorrect=[];
+let memorySelected=[];
+
+
+function showMemoryOptions(objects,correct){
+
+ memoryCorrect=correct;
+
+ memorySelected=[];
+
+ const box=$("memoryChoices");
+
+ box.innerHTML="";
+
+ box.classList.remove("hidden");
+
+ $("memoryConfirm")
+  .classList.remove("hidden");
+
+
+ let shuffled=[...objects];
+
+
+ for(let i=shuffled.length-1;i>0;i--){
+
+  let j=Math.floor(
+   Math.random()*(i+1)
+  );
+
+  [shuffled[i],shuffled[j]]=
+  [shuffled[j],shuffled[i]];
+
+ }
+
+
+ shuffled.forEach(emoji=>{
+
+  let button=
+  document.createElement("button");
+
+  button.className="memoryChoice";
+
+  button.textContent=emoji;
+
+  button.dataset.emoji=emoji;
+
+
+  button.onclick=function(){
+
+   if(!running)return;
+
+   let value=
+    button.dataset.emoji;
+
+
+   if(memorySelected.includes(value)){
+
+    memorySelected=
+     memorySelected.filter(
+      x=>x!==value
+     );
+
+    button.classList.remove("selected");
+
+   }else{
+
+    if(memorySelected.length>=4){
+
+     message(
+      "⚠️ Solo puedes elegir 4."
+     );
+
+     return;
     }
+
+    memorySelected.push(value);
+
+    button.classList.add("selected");
+
+   }
+
+  };
+
+
+  box.appendChild(button);
+
+ });
+
+}
+
+
+function checkMemory(){
+
+ if(!running)return;
+
+ if(memorySelected.length!==4){
+
+  message(
+   "⚠️ Debes seleccionar 4 objetos."
+  );
+
+  return;
+ }
+
+
+ let correct=
+ memoryCorrect.every(
+  item=>memorySelected.includes(item)
+ );
+
+
+ if(correct){
+
+  running=false;
+
+  score+=80;
+
+  combo++;
+
+  soundCorrect();
+
+  document
+   .querySelectorAll(".memoryChoice")
+   .forEach(btn=>{
+
+    if(memoryCorrect.includes(
+     btn.dataset.emoji
+    )){
+
+     btn.classList.add("correct");
+
+    }
+
+   });
+
+
+  message(
+   "🎉 ¡Memoria perfecta!"
+  );
+
+  wait(nextLevel,1000);
+
+ }else{
+
+  loseLife();
+
+  document
+   .querySelectorAll(".memoryChoice")
+   .forEach(btn=>{
+
+    if(
+     memorySelected.includes(
+      btn.dataset.emoji
+     ) &&
+     !memoryCorrect.includes(
+      btn.dataset.emoji
+     )
+    ){
+
+     btn.classList.add("wrong");
+
+    }
+
+   });
+
+
+  message(
+   "❌ No todos eran correctos."
+  );
+
+  memorySelected=[];
+
+  document
+   .querySelectorAll(".memoryChoice")
+   .forEach(btn=>{
+    btn.classList.remove("selected");
+   });
+
+ }
+
 }
 
 
 /* =====================================================
-   MOSTRAR RETO
+NIVEL 3
 ===================================================== */
 
-function showChallenge(){
+function level3(){
 
-    locked = false;
+ $("levelTitle").textContent=
+ "❓ PREGUNTA";
 
-    const challenge =
-        challenges[currentChallenge];
+ $("mission").textContent=
+ "Jessica debe responder correctamente.";
 
-    document.getElementById("challengeNumber")
-        .textContent =
-        `Reto ${currentChallenge + 1} de ${challenges.length}`;
+ $("gameArea").innerHTML=`
 
-    document.getElementById("progress")
-        .style.width =
-        `${(currentChallenge / challenges.length) * 100}%`;
+ <div class="card center">
 
-    const container =
-        document.getElementById("challengeContainer");
+ <div style="font-size:60px">
+ 👩🏼‍💼💬
+ </div>
 
-    container.innerHTML = `
+ <div class="question">
 
-        <div class="challenge-icon">
-            ${challenge.icon}
-        </div>
+ ¿Por qué es importante escuchar
+ las ideas de los compañeros?
 
-        <h2>
-            ${challenge.question}
-        </h2>
+ </div>
 
-        <div class="options">
+ <button class="option"
+ onclick="answer3(false)">
+ 😶 Para no trabajar
+ </button>
 
-            ${challenge.options.map((option,index)=>`
+ <button class="option"
+ onclick="answer3(true)">
+ 🤝 Porque fortalece las relaciones
+ </button>
 
-                <button
-                    class="option"
-                    onclick="checkAnswer(${index},this)"
-                >
-                    ${option}
-                </button>
+ <button class="option"
+ onclick="answer3(false)">
+ 🚫 Para evitar participar
+ </button>
 
-            `).join("")}
+ </div>
 
-        </div>
-    `;
+ `;
 
-    document.getElementById("feedback")
-        .textContent = "";
+ startTimer(25);
+}
+
+
+function answer3(correct){
+
+ if(!running)return;
+
+ if(correct){
+
+  score+=50;
+  combo++;
+
+  soundCorrect();
+
+  message("🎉 ¡Correcto!");
+
+  running=false;
+
+  wait(nextLevel,900);
+
+ }else{
+
+  loseLife();
+
+  message("❌ Intenta nuevamente.");
+
+ }
+
 }
 
 
 /* =====================================================
-   RESPUESTA
+NIVEL 4
 ===================================================== */
 
-function checkAnswer(index,button){
+function level4(){
 
-    if(locked) return;
+ $("levelTitle").textContent=
+ "🎮 ATRAPA LO CORRECTO";
 
-    locked = true;
+ $("mission").textContent=
+ "Yonatan debe atrapar 8 estrellas y evitar las bombas.";
 
-    const challenge =
-        challenges[currentChallenge];
+ $("gameArea").innerHTML=`
 
-    const buttons =
-        document.querySelectorAll(".option");
+ <div id="playArea" class="playArea"></div>
+ `;
 
-    if(index === challenge.correct){
+ let area=$("playArea");
+ let points=0;
 
-        button.classList.add("correct");
 
-        score++;
+ function createItem(){
 
-        sound("correct");
+  if(!running)return;
 
-        document.getElementById("feedback")
-            .innerHTML =
-            "🎉 ¡Excelente! Respuesta correcta.";
+  let good=Math.random()>0.3;
 
-        createConfetti();
+  let item=
+   document.createElement("div");
+
+  item.className="falling";
+
+  item.textContent=
+   good?"⭐":"💣";
+
+  item.style.left=
+   (5+Math.random()*85)+"%";
+
+  item.style.top=
+   (5+Math.random()*80)+"%";
+
+  area.appendChild(item);
+
+
+  item.onclick=function(){
+
+   if(!running)return;
+
+   item.remove();
+
+   if(good){
+
+    points++;
+
+    score+=15;
+    combo++;
+
+    soundCorrect();
+
+    message(
+     "⭐ "+points+" / 8"
+    );
+
+    if(points>=8){
+
+     running=false;
+
+     score+=60;
+
+     message(
+      "🎉 ¡Reto superado!"
+     );
+
+     wait(nextLevel,900);
+
+    }
+
+   }else{
+
+    loseLife();
+
+    message("💣 ¡Cuidado!");
+
+   }
+
+  };
+
+
+  wait(()=>{
+
+   if(item.parentNode)
+    item.remove();
+
+  },900);
+
+ }
+
+
+ let spawn=setInterval(
+  createItem,
+  650
+ );
+
+ timers.push(spawn);
+
+ startTimer(25);
+}
+
+
+/* =====================================================
+NIVEL 5
+===================================================== */
+
+function level5(){
+
+ $("levelTitle").textContent=
+ "💬 ¿QUÉ HARÍAS?";
+
+ $("mission").textContent=
+ "MyFa debe resolver una situación con el equipo.";
+
+ $("gameArea").innerHTML=`
+
+ <div class="card center">
+
+ <div style="font-size:60px">
+ 👩🏽‍💼👥
+ </div>
+
+ <div class="question">
+
+ Un compañero propone una idea
+ diferente a la tuya.
+
+ ¿Qué haces?
+
+ </div>
+
+ <button class="option"
+ onclick="answer5(false)">
+ 😡 Decir que mi idea es mejor
+ </button>
+
+ <button class="option"
+ onclick="answer5(true)">
+ 👂 Escuchar y analizar su propuesta
+ </button>
+
+ <button class="option"
+ onclick="answer5(false)">
+ 🙈 Ignorarla
+ </button>
+
+ </div>
+
+ `;
+
+ startTimer(25);
+}
+
+
+function answer5(correct){
+
+ if(!running)return;
+
+ if(correct){
+
+  score+=50;
+  combo++;
+
+  soundCorrect();
+
+  message("🎉 ¡Muy bien!");
+
+  running=false;
+
+  wait(nextLevel,900);
+
+ }else{
+
+  loseLife();
+
+  message(
+   "❌ Esa opción puede afectar el trabajo en equipo."
+  );
+
+ }
+
+}
+
+
+/* =====================================================
+NIVEL 6
+===================================================== */
+
+function level6(){
+
+ $("levelTitle").textContent=
+ "🧠 MEMORIA RÁPIDA";
+
+ $("mission").textContent=
+ "Laura debe memorizar la secuencia.";
+
+ let correct=[
+  "📁","☕","🔑","💻","⭐"
+ ];
+
+ let wrong1=[
+  "📁","🔑","☕","💻","⭐"
+ ];
+
+ let wrong2=[
+  "⭐","☕","📁","🔑","💻"
+ ];
+
+ let wrong3=[
+  "💻","📁","🔑","⭐","☕"
+ ];
+
+ let options=[
+  correct,
+  wrong1,
+  wrong2,
+  wrong3
+ ];
+
+
+ for(let i=options.length-1;i>0;i--){
+
+  let j=Math.floor(
+   Math.random()*(i+1)
+  );
+
+  [options[i],options[j]]=
+  [options[j],options[i]];
+
+ }
+
+
+ let correctIndex=
+  options.indexOf(correct);
+
+
+ $("gameArea").innerHTML=`
+
+ <div class="card center">
+
+ <div style="font-size:60px">
+ 👀🧠
+ </div>
+
+ <h3>MEMORIZA</h3>
+
+ <div
+ id="sequenceDisplay"
+ class="sequenceDisplay">
+ </div>
+
+ <p id="sequenceText">
+ Tienes 4 segundos...
+ </p>
+
+ <div
+ id="sequenceOptions"
+ class="sequenceOptions hidden">
+ </div>
+
+ </div>
+
+ `;
+
+
+ let display=
+  $("sequenceDisplay");
+
+
+ correct.forEach(emoji=>{
+
+  let item=
+   document.createElement("div");
+
+  item.className="sequenceEmoji";
+
+  item.textContent=emoji;
+
+  display.appendChild(item);
+
+ });
+
+
+ soundMemory();
+
+
+ wait(()=>{
+
+  display.innerHTML="";
+
+  $("sequenceText").textContent=
+   "🤔 ¿Cuál era la correcta?";
+
+  let box=
+   $("sequenceOptions");
+
+  box.classList.remove("hidden");
+
+
+  options.forEach((sequence,index)=>{
+
+   let button=
+    document.createElement("button");
+
+   button.className=
+    "sequenceOption";
+
+   button.textContent=
+    sequence.join("   ");
+
+
+   button.onclick=function(){
+
+    if(!running)return;
+
+    if(index===correctIndex){
+
+     score+=80;
+     combo++;
+
+     soundCorrect();
+
+     message(
+      "🧠 ¡Memoria perfecta!"
+     );
+
+     running=false;
+
+     wait(nextLevel,900);
 
     }else{
 
-        button.classList.add("wrong");
+     loseLife();
 
-        buttons[challenge.correct]
-            .classList.add("correct");
-
-        lives--;
-
-        updateLives();
-
-        sound("wrong");
-
-        if(navigator.vibrate){
-
-            navigator.vibrate([
-                100,
-                60,
-                100
-            ]);
-
-        }
-
-        document.getElementById("feedback")
-            .innerHTML =
-            "❌ Respuesta incorrecta. ¡Cuidado con las vidas!";
-
-        if(lives <= 0){
-
-            setTimeout(()=>{
-                finishGame(false);
-            },1200);
-
-            return;
-        }
+     message(
+      "❌ Esa no era la secuencia."
+     );
 
     }
 
-    setTimeout(()=>{
+   };
 
-        currentChallenge++;
 
-        if(currentChallenge >= challenges.length){
+   box.appendChild(button);
 
-            finishGame(true);
+  });
 
-        }else{
+ },4000);
 
-            showChallenge();
-        }
 
-    },1100);
-
+ startTimer(25);
 }
 
 
 /* =====================================================
-   VIDAS
+NIVEL 7
 ===================================================== */
 
-function updateLives(){
+function level7(){
 
-    document.getElementById("lives")
-        .textContent =
-        "❤️".repeat(lives)
-        + "🖤".repeat(3-lives);
+ $("levelTitle").textContent=
+ "⚡ REACCIÓN RÁPIDA";
+
+ $("mission").textContent=
+ "Pulsa SOLO cuando aparezca ⭐.";
+
+ $("gameArea").innerHTML=`
+
+ <div class="card center">
+
+ <div id="reactionText"
+ style="font-size:24px;font-weight:bold">
+ Espera...
+ </div>
+
+ <button
+ id="reactionButton"
+ class="reactionButton"
+ onclick="reactionClick()">
+ ⏳
+ </button>
+
+ <p>⭐ = tocar</p>
+
+ </div>
+
+ `;
+
+
+ let button=$("reactionButton");
+
+ let ready=false;
+ let points=0;
+
+
+ function change(){
+
+  if(!running)return;
+
+  ready=false;
+
+  button.textContent="⏳";
+
+  button.style.background="#ff6584";
+
+  $("reactionText").textContent=
+   "Espera...";
+
+
+  let delay=
+   700+Math.random()*1400;
+
+
+  wait(()=>{
+
+   if(!running)return;
+
+   ready=true;
+
+   button.textContent="⭐";
+
+   button.style.background="#38a169";
+
+   $("reactionText").textContent=
+    "¡AHORA!";
+
+  },delay);
+
+ }
+
+
+ window.reactionClick=function(){
+
+  if(!running)return;
+
+  if(ready){
+
+   points++;
+
+   score+=15;
+   combo++;
+
+   soundCorrect();
+
+   message("⚡ ¡Rápido!");
+
+
+   if(points>=6){
+
+    running=false;
+
+    score+=70;
+
+    message(
+     "🎉 ¡Reflejos increíbles!"
+    );
+
+    wait(nextLevel,900);
+
+   }else{
+
+    change();
+
+   }
+
+  }else{
+
+   loseLife();
+
+   message(
+    "❌ ¡Demasiado pronto!"
+   );
+
+  }
+
+ };
+
+
+ change();
+
+ startTimer(25);
 }
 
 
 /* =====================================================
-   CONFETI
+NIVEL 8
 ===================================================== */
 
-function createConfetti(){
+function level8(){
 
-    for(let i=0;i<25;i++){
+ $("levelTitle").textContent=
+ "❓ RONDA DE PREGUNTAS";
 
-        const piece =
-            document.createElement("div");
+ $("mission").textContent=
+ "Yonatan debe superar dos preguntas.";
 
-        piece.className = "confetti";
+ let questions=[
 
-        piece.style.left =
-            Math.random()*100 + "%";
+ {
+  q:"¿Qué ayuda a desarrollar mejores relaciones?",
+  a:[
+   "🚫 No participar",
+   "🤝 Participar y valorar las ideas",
+   "😶 Trabajar siempre solo"
+  ],
+  correct:1
+ },
 
-        piece.style.animationDuration =
-            (1.5 + Math.random()*2) + "s";
+ {
+  q:"¿Qué puede generar la participación del equipo?",
+  a:[
+   "💡 Nuevas soluciones e innovación",
+   "🚫 Más problemas",
+   "🙈 Menos comunicación"
+  ],
+  correct:0
+ }
 
-        piece.style.transform =
-            `rotate(${Math.random()*360}deg)`;
-
-        document.body.appendChild(piece);
-
-        setTimeout(()=>{
-            piece.remove();
-        },4000);
-
-    }
-
-}
+ ];
 
 
-/* =====================================================
-   FINAL
-===================================================== */
+ let current=0;
 
-function finishGame(won){
 
-    clearInterval(timerInterval);
+ function showQuestion(){
 
-    document.getElementById("gameScreen")
-        .classList.remove("active");
+  let q=questions[current];
 
-    document.getElementById("resultScreen")
-        .classList.add("active");
+  $("gameArea").innerHTML=`
 
-    document.getElementById("finalScore")
-        .textContent = score;
+  <div class="card center">
 
-    const icon =
-        document.getElementById("resultIcon");
+  <div style="font-size:55px">
+  👨🏻‍💼❓
+  </div>
 
-    const title =
-        document.getElementById("resultTitle");
+  <div class="question">
+  ${q.q}
+  </div>
 
-    const message =
-        document.getElementById("finalMessage");
+  <div id="qOptions"></div>
 
-    if(won){
+  </div>
 
-        icon.textContent = "🔓🏆";
+  `;
 
-        title.textContent =
-            "¡OFICINA DESBLOQUEADA!";
 
-        message.innerHTML = `
-            🎉 <strong>¡Misión completada!</strong><br><br>
+  q.a.forEach((text,index)=>{
 
-            Demostraron que la participación,
-            la colaboración, el respeto y el
-            intercambio de ideas ayudan a
-            fortalecer las relaciones entre
-            los miembros de una organización.
-            <br><br>
-            ⭐ Puntuación final:
-            <strong>${score}/10</strong>
-        `;
+   let button=
+    document.createElement("button");
 
-        createConfetti();
+   button.className="option";
+
+   button.textContent=text;
+
+
+   button.onclick=function(){
+
+    if(!running)return;
+
+
+    if(index===q.correct){
+
+     score+=40;
+     combo++;
+
+     soundCorrect();
+
+     current++;
+
+     message("🎉 ¡Correcto!");
+
+
+     if(current===questions.length){
+
+      running=false;
+
+      score+=70;
+
+      wait(nextLevel,900);
+
+     }else{
+
+      wait(
+       showQuestion,
+       600
+      );
+
+     }
 
     }else{
 
-        icon.textContent = "🔒😢";
+     loseLife();
 
-        title.textContent =
-            "¡MISIÓN FALLIDA!";
+     message(
+      "❌ Respuesta incorrecta."
+     );
 
-        message.innerHTML = `
-            😢 La oficina continúa bloqueada.<br><br>
-
-            Se quedaron sin vidas o se terminó
-            el tiempo.
-
-            <br><br>
-
-            💡 Recuerden:
-            trabajar en equipo, compartir
-            información y valorar las ideas
-            de los demás fortalece las
-            relaciones dentro de la organización.
-        `;
     }
+
+   };
+
+
+   $("qOptions").appendChild(button);
+
+  });
+
+ }
+
+
+ showQuestion();
+
+ startTimer(30);
+}
+
+
+/* =====================================================
+NIVEL 9
+===================================================== */
+
+function level9(){
+
+ $("levelTitle").textContent=
+ "🏆 GRAN FINAL";
+
+ $("mission").textContent=
+ "Andrea tiene la última decisión.";
+
+ $("gameArea").innerHTML=`
+
+ <div class="card center">
+
+ <div style="font-size:75px">
+ 🔐🚪
+ </div>
+
+ <h2>
+ La puerta está bloqueada.
+ </h2>
+
+ <div class="question">
+
+ ¿Qué fortalece las relaciones
+ entre los miembros de una organización?
+
+ </div>
+
+ <button class="option"
+ onclick="finalAnswer(false)">
+ 🤐 Trabajar sin escuchar
+ </button>
+
+ <button class="option"
+ onclick="finalAnswer(true)">
+ 🤝 Participar, escuchar y valorar las ideas
+ </button>
+
+ <button class="option"
+ onclick="finalAnswer(false)">
+ 🚫 Evitar trabajar en equipo
+ </button>
+
+ </div>
+
+ `;
+
+ startTimer(30);
+}
+
+
+function finalAnswer(correct){
+
+ if(!running)return;
+
+ if(correct){
+
+  running=false;
+
+  score+=150;
+
+  soundDoor();
+
+  message(
+   "🎉 ¡PUERTA ABIERTA!"
+  );
+
+  wait(win,1200);
+
+ }else{
+
+  loseLife();
+
+  message(
+   "❌ ¡Piensa en todo lo aprendido!"
+  );
+
+ }
 
 }
 
 
 /* =====================================================
-   REINICIAR
+GANAR
 ===================================================== */
 
-function restartGame(){
+function win(){
 
-    document.getElementById("resultScreen")
-        .classList.remove("active");
+ clearAll();
 
-    document.getElementById("startScreen")
-        .classList.add("active");
+ soundWin();
 
+ $("gameScreen")
+  .classList.remove("active");
+
+ $("finalScreen")
+  .classList.add("active");
+
+
+ let rank="🥉 SOBREVIVIENTE";
+
+ if(score>=300)
+  rank="🥈 EXPERTO DE OFICINA";
+
+ if(score>=500)
+  rank="🥇 MAESTRO DEL EQUIPO";
+
+ if(score>=700)
+  rank="👑 LEYENDA DE LA OFICINA";
+
+
+ $("finalContent").innerHTML=`
+
+ <div class="finalIcon">
+ 🎉🏆🎊
+ </div>
+
+ <h1>
+ ¡MISIÓN COMPLETADA!
+ </h1>
+
+ <p>
+ Andrea, Janier, Jessica,
+ MyFa, Yonatan y Laura
+ lograron escapar.
+ </p>
+
+ <div class="rank">
+ ${rank}
+ </div>
+
+ <h2>
+ 🏆 ${score} puntos
+ </h2>
+
+ <p>
+ 🔥 Completaste los 9 retos.
+ </p>
+
+ <p>
+ 🤝 ¡El trabajo en equipo fue la clave!
+ </p>
+
+ <button
+ class="bigButton"
+ onclick="location.reload()">
+
+ 🔄 JUGAR DE NUEVO
+
+ </button>
+
+ `;
+}
+
+
+/* =====================================================
+PERDER
+===================================================== */
+
+function lose(){
+
+ clearAll();
+
+ soundWrong();
+
+ $("gameScreen")
+  .classList.remove("active");
+
+ $("finalScreen")
+  .classList.add("active");
+
+
+ $("finalContent").innerHTML=`
+
+ <div class="finalIcon">
+ 😵‍💫🚨🔒
+ </div>
+
+ <h1>
+ ¡SE ACABARON LAS VIDAS!
+ </h1>
+
+ <p>
+ La oficina logró atraparlos...
+ </p>
+
+ <h2>
+ 🏆 ${score} puntos
+ </h2>
+
+ <button
+ class="bigButton"
+ onclick="location.reload()">
+
+ 🔄 INTENTAR DE NUEVO
+
+ </button>
+
+ `;
 }
 
 </script>
